@@ -11,9 +11,9 @@ namespace autumn {
 
 class Utils {
   public:
-    static uint64_t get_thread_id();
-    static uint64_t get_time_ns();
-    static std::string ns_to_string(uint64_t ns);
+    static uint64_t GetThreadId();
+    static int64_t GetLocalTime();
+    static std::string NsToString(int64_t time);
 };
 
 }  // namespace autumn

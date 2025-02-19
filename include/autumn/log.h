@@ -4,6 +4,10 @@
 
 #pragma once
 
+#include <sys/cdefs.h>
+
+#include <cstdarg>
+#include <cstddef>
 #include <cstdint>
 
 namespace autumn {
@@ -17,7 +21,7 @@ enum class LogPriority : uint32_t {
     WARN,
     ERROR,
     FATAL,
-    SILENT,  // only for minimum_priority(); must be last.
+    SILENT,  // must be last.
 };
 
 enum class LogType : uint32_t {
@@ -34,8 +38,24 @@ enum class LogType : uint32_t {
     DEFAULT = 0x7FFFFFFF
 };
 
+typedef long logger_t;
+
+int create_logger(logger_t* logger_out);
+
+void destroy_logger(logger_t logger);
+
 // 打印格式化字符串日志
-void log_print(LogType type, LogPriority priority, const char* tag, const char* fmt, ...)
+void log_print(logger_t logger, LogType type, LogPriority priority, const char* tag,
+               const char* fmt, ...) __attribute__((__format__(printf, 5, 6)));
+
+// 记录断言失败，日志级别默认为 FATAL
+void log_assert(logger_t logger, const char* condition, const char* tag, const char* fmt, ...)
         __attribute__((__format__(printf, 4, 5)));
+
+// TODO: 在捕获到崩溃信号时调用
+void buf_print(int bufID, int priority, const char* tag, const char* fmt, ...)
+        __attribute__((__format__(printf, 4, 5)));
+
+int32_t minimum_priority(LogPriority priority);
 
 }  // namespace autumn

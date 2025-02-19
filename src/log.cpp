@@ -4,31 +4,61 @@
 
 #include "autumn/log.h"
 
-#include <sys/syscall.h>
-#include <unistd.h>
-
-#include <cinttypes>
 #include <string>
 
+#include "logger.h"
 #include "utils.h"
 
 namespace autumn {
 
-uint64_t get_thread_id() {
-    return syscall(SYS_thread_selfid);
+int create_logger(logger_t* logger_out) {
+    *logger_out = reinterpret_cast<logger_t>(new Logger());
+    return 0;
 }
 
-void log_print(LogType type, LogPriority priority, const char* tag, const char* fmt, ...) {
+void destroy_logger(logger_t logger) {
+    auto* p = reinterpret_cast<Logger*>(logger);
+    delete p;
+}
+
+void log_print(logger_t logger, LogType type, LogPriority priority, const char* tag,
+               const char* fmt, ...) {
+    if (logger == 0) {
+        return;
+    }
+
+    Message message;
+    message.struct_size = 0;
+    message.line = 0;
+    message.thread_id = Utils::GetThreadId();
+    message.log_type = type;
+    message.priority = priority, strncpy(message.tag, tag, sizeof(message.tag));
+    strncpy(message.file, "", sizeof(message.file));
+    std::string time = Utils::NsToString(Utils::GetLocalTime());
+    strncpy(message.time, time.c_str(), sizeof(message.time));
+
     va_list v;
     va_start(v, fmt);
-    char content[4096];
-    int size = vsnprintf(content, 4096, fmt, v);
-    char buff[4096];
-    snprintf(buff, 4096, "[%s][%d][%d][%s][%" PRIu64 "]%s",
-             Utils::ns_to_string(Utils::get_time_ns()).c_str(), type, priority, tag,
-             Utils::get_thread_id(), content);
-    printf("%s\n", buff);
+    do {
+        va_list c;
+        va_copy(c, v);
+        int size = vsnprintf(nullptr, 0, fmt, c);
+        if (size <= 0) {
+            break;
+        }
+        message.content.resize(size + 1);
+        vsnprintf(&message.content[0], size + 1, fmt, v);
+        auto* p = reinterpret_cast<Logger*>(logger);
+        p->Print(message);
+    } while (false);
     va_end(v);
 }
+
+// void log_assert(logger_t logger, const char* condition, const char* tag, const char* fmt, ...) {
+//     Message m;
+//     m.priority = LogPriority::FATAL;
+//     auto* p = reinterpret_cast<Logger*>(logger);
+//     p->Print(m);
+// }
 
 }  // namespace autumn

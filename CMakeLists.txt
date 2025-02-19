@@ -6,12 +6,13 @@ add_definitions(
         -O3 -g -W -Wall
 )
 
+
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
 aux_source_directory(${PROJECT_SOURCE_DIR}/src AUTUMN_SRC)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
-add_library(autumn_shared SHARED ${AUTUMN_SRC} include/autumn/log.h)
-add_library(autumn_static STATIC ${AUTUMN_SRC} include/autumn/log.h)
+add_library(autumn_shared SHARED ${AUTUMN_SRC})
+add_library(autumn_static STATIC ${AUTUMN_SRC})
 
 set_target_properties(autumn_shared PROPERTIES OUTPUT_NAME "include/autumn")
 get_target_property(OUTPUT_VALUE autumn_shared OUTPUT_NAME)
