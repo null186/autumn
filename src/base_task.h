@@ -4,33 +4,20 @@
 
 #pragma once
 
+#include "task.h"
 #include "task_bridge.h"
 
 namespace autumn {
 
 class TaskContext;
 
-template <typename O, typename X>
-class TaskBridge;
-
-template <typename O, typename X>
-class ThenTaskBridge;
-
-template <typename O, typename X>
-class FollowTaskBridge;
-
 template <typename I, typename O>
-class BaseTask {
+class BaseTask : public Task<I, O> {
   public:
     explicit BaseTask(TaskContext* tc) : task_context_(tc) {}
     virtual ~BaseTask() = default;
 
   public:
-    /**
-     * 设置任务参数
-     */
-    void SetParam(I* param) { params_ = param; }
-
     /**
      * 追加任务
      * @tparam X
@@ -60,30 +47,15 @@ class BaseTask {
     }
 
   public:
-    /**
-     * 任务开始
-     */
-    virtual void Start() = 0;
+    void SetParam(I* param) override { params_ = param; }
 
-    /**
-     * 任务结束
-     */
-    virtual void Finish() = 0;
-
-  public:
-    /**
-     * 任务成功
-     */
-    virtual void TaskSuccess(O* param) {
+    void TaskSuccess(O* param) override {
         if (listener_) {
             listener_->OnSuccess(param);
         }
     }
 
-    /**
-     * 任务失败
-     */
-    virtual void TaskFailed() {
+    void TaskFailed() override {
         if (listener_) {
             listener_->OnFailed();
         }

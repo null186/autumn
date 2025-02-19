@@ -4,13 +4,10 @@
 
 #pragma once
 
-#include "base_task.h"
 #include "task_listener.h"
+#include "task.h"
 
 namespace autumn {
-
-template <typename I, typename O>
-class BaseTask;
 
 template <typename O, typename X>
 class TaskBridge : public TaskListener<O> {
@@ -18,10 +15,10 @@ class TaskBridge : public TaskListener<O> {
     TaskBridge() = default;
     ~TaskBridge() = default;
 
-    void SetTask(BaseTask<O, X>* task) { next_task_ = task; }
+    void SetTask(Task<O, X>* task) { next_task_ = task; }
 
-  protected:
-    BaseTask<O, X>* next_task_ = nullptr;
+  public:
+    Task<O, X>* next_task_ = nullptr;
 };
 
 template <typename O, typename X>
@@ -37,7 +34,7 @@ class ThenTaskBridge : public TaskBridge<O, X> {
     }
 
     void OnFailed() {
-        // TODO: task failed
+        TaskBridge<O, X>::next_task_->TaskFailed();
     }
 };
 
@@ -53,9 +50,7 @@ class FollowTaskBridge : public TaskBridge<O, X> {
         TaskBridge<O, X>::next_task_->Start();
     }
 
-    void OnFailed() {
-        // TODO: task failed
-    }
+    void OnFailed() { TaskBridge<O, X>::next_task_->Start(); }
 };
 
 template <typename O, typename X>
