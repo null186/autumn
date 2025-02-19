@@ -31,9 +31,6 @@ class AssemblerTask : public BaseTask<LogMessage, LogMessage> {
     void Finish() override;
 
   private:
-    TaskContext* task_context_ = nullptr;
-
-  private:
     FormatTask* format_task_ = nullptr;
     CompressTask* compress_task_ = nullptr;
     EncryptTask* encrypt_task_ = nullptr;

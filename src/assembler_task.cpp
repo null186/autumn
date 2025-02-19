@@ -14,12 +14,12 @@
 namespace autumn {
 
 AssemblerTask::AssemblerTask(TaskContext* tc)
-    : BaseTask<LogMessage, LogMessage>(tc), task_context_(tc) {
-    format_task_ = new FormatTask(task_context_);
-    compress_task_ = new CompressTask(task_context_);
-    encrypt_task_ = new EncryptTask(task_context_);
-    stream_task_ = new StreamTask(task_context_);
-    write_task_ = new WriteTask(task_context_);
+    : BaseTask<LogMessage, LogMessage>(tc)  {
+    format_task_ = new FormatTask(tc);
+    compress_task_ = new CompressTask(tc);
+    encrypt_task_ = new EncryptTask(tc);
+    stream_task_ = new StreamTask(tc);
+    write_task_ = new WriteTask(tc);
 }
 
 AssemblerTask::~AssemblerTask() {
