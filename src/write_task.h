@@ -8,14 +8,19 @@
 
 namespace autumn {
 
+class FileWriter;
+
 class WriteTask : public BusinessTask<LogEntry, std::string> {
   public:
-    explicit WriteTask(TaskContext* tc) : BusinessTask<LogEntry, std::string>(tc) {}
-    ~WriteTask() override = default;
+    explicit WriteTask(TaskContext* tc);
+    ~WriteTask() override;
 
   public:
     void Start() override;
     void Finish() override;
+
+  private:
+    FileWriter* file_writer_ = nullptr;
 };
 
 }  // namespace autumn
