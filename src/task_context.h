@@ -8,8 +8,8 @@ namespace autumn {
 
 class TaskContext {
   public:
-    TaskContext();
-    virtual ~TaskContext();
+    TaskContext() = default;
+    ~TaskContext() = default;
 };
 
 }  // namespace autumn

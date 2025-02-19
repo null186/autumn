@@ -4,7 +4,7 @@
 
 #include "logger.h"
 
-#include <cinttypes>
+#include <utility>
 
 #include "task_assembler.h"
 #include "task_context.h"
@@ -23,13 +23,7 @@ autumn::Logger::~Logger() {
 }
 
 void autumn::Logger::Print(Message message) {
-    char buff[4096] = {0};  // TODO: 超过 4096 截断为多条日志。
-    std::snprintf(buff, 4096, "[%s][%d][%" PRIu64 "][%s][%s][%d] %s", message.time,
-                  message.log_type, message.thread_id, message.tag, message.file, message.line,
-                  message.content.c_str());
-    printf("%s\n", buff);
-
-    assembler_->SetParam(nullptr);
+    assembler_->SetParam(std::move(message));
     assembler_->Start();
 }
 

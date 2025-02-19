@@ -38,13 +38,17 @@ class ThenTaskBridge : public TaskBridge<O, X> {
     ~ThenTaskBridge() override = default;
 
   public:
-    void OnSuccess(O* param) override {
+    void OnSuccess(O param) override {
         auto* next_task = TaskBridge<O, X>::next_task_;
         if (!next_task) {
             return;
         }
         next_task->SetParam(param);
         next_task->Start();
+    }
+
+    void OnFailed(O param) override {
+        // TODO: 临时方案
     }
 
     void OnFailed() override {
@@ -68,7 +72,16 @@ class FollowTaskBridge : public TaskBridge<O, X> {
     ~FollowTaskBridge() override = default;
 
   public:
-    void OnSuccess(O* param) override {
+    void OnSuccess(O param) override {
+        auto* next_task = TaskBridge<O, X>::next_task_;
+        if (!next_task) {
+            return;
+        }
+        next_task->SetParam(param);
+        next_task->Start();
+    }
+
+    void OnFailed(O param) override {
         auto* next_task = TaskBridge<O, X>::next_task_;
         if (!next_task) {
             return;
@@ -78,27 +91,23 @@ class FollowTaskBridge : public TaskBridge<O, X> {
     }
 
     void OnFailed() override {
-        auto* next_task = TaskBridge<O, X>::next_task_;
-        if (!next_task) {
-            return;
-        }
-        next_task->Start();
+        // TODO: 临时方案
     }
 };
 
 template <typename O, typename X>
 class ThreadTaskBridge : public TaskBridge<O, X> {
-    // TODO: impl thread task
+    // TODO: 待实现
 };
 
 template <typename O, typename X>
 class LoopTaskBridge : public TaskBridge<O, X> {
-    // TODO: impl loop task
+    // TODO: 待实现
 };
 
 template <typename O, typename X>
 class RetryTaskBridge : public TaskBridge<O, X> {
-    // TODO: impl retry task
+    // TODO: 待实现
 };
 
 }  // namespace autumn

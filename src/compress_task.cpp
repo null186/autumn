@@ -10,11 +10,13 @@ namespace autumn {
 
 void autumn::CompressTask::Start() {
     ilog << "Compress task start" << end_line;
-    TaskSuccess(nullptr);
+    // TODO: 待实现
+    TaskSuccess(params_);
 }
 
 void CompressTask::Finish() {
     ilog << "Compress task finish" << end_line;
+    // TODO: 待实现
 }
 
 }  // namespace autumn

@@ -17,8 +17,8 @@ class BusinessTask : public BaseTask<I, O> {
     ~BusinessTask() override = default;
 
   public:
-    void TaskSuccess(O* param) override { BaseTask<I, O>::TaskSuccess(param); }
-    void TaskFailed() override { BaseTask<I, O>::TaskFailed(); }
+    void TaskSuccess(O param) override { BaseTask<I, O>::TaskSuccess(param); }
+    void TaskFailed(O param) override { BaseTask<I, O>::TaskFailed(param); }
 };
 
 }  // namespace autumn

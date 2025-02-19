@@ -7,13 +7,17 @@
 #include <vector>
 
 #include "base_task.h"
+#include "logger.h"
 
 namespace autumn {
 
-class EncryptTask;
+class FormatTask;
 class CompressTask;
+class EncryptTask;
+class StreamTask;
+class WriteTask;
 
-class TaskAssembler : public BaseTask<void, void> {
+class TaskAssembler : public BaseTask<Message, Message> {
   public:
     explicit TaskAssembler(TaskContext* tc);
     ~TaskAssembler() override;
@@ -22,7 +26,7 @@ class TaskAssembler : public BaseTask<void, void> {
     void Assembler();
 
   public:
-    void SetParam(void* param) override;
+    void SetParam(Message param) override;
     void Start() override;
     void Finish() override;
 
@@ -30,8 +34,11 @@ class TaskAssembler : public BaseTask<void, void> {
     TaskContext* task_context_ = nullptr;
 
   private:
-    EncryptTask* encrypt_task_ = nullptr;
+    FormatTask* format_task_ = nullptr;
     CompressTask* compress_task_ = nullptr;
+    EncryptTask* encrypt_task_ = nullptr;
+    StreamTask* stream_task_ = nullptr;
+    WriteTask* write_task_ = nullptr;
 };
 
 }  // namespace autumn

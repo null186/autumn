@@ -17,7 +17,13 @@ class TaskListener {
      * Task success callback.
      * @param param The input data type of the next task.
      */
-    virtual void OnSuccess(O* param) = 0;
+    virtual void OnSuccess(O param) = 0;
+
+    /**
+     * Task failed callback.
+     * @param param The input data type of the next task.
+     */
+    virtual void OnFailed(O param) = 0;
 
     /**
      * Task failed callback.

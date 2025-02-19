@@ -14,7 +14,7 @@ class Task {
     /**
      * Set task param.
      */
-    virtual void SetParam(I* param) = 0;
+    virtual void SetParam(I param) = 0;
 
     /**
      * Task start.
@@ -30,10 +30,15 @@ class Task {
      * Task success.
      * @param param Input param.
      */
-    virtual void TaskSuccess(O* param) = 0;
+    virtual void TaskSuccess(O param) = 0;
 
     /**
-     * Task Failed.
+     * Task failed.
+     */
+    virtual void TaskFailed(O param) = 0;
+
+    /**
+     * Task failed.
      */
     virtual void TaskFailed() = 0;
 };

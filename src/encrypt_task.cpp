@@ -10,11 +10,13 @@ namespace autumn {
 
 void EncryptTask::Start() {
     ilog << "Encrypt task start" << end_line;
-    TaskSuccess(nullptr);
+    // TODO: 待实现
+    TaskSuccess(params_);
 }
 
 void EncryptTask::Finish() {
     ilog << "Encrypt task finish" << end_line;
+    // TODO: 待实现
 }
 
 }  // namespace autumn

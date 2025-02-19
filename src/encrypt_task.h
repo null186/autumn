@@ -10,9 +10,9 @@
 
 namespace autumn {
 
-class EncryptTask : public BusinessTask<void, int> {
+class EncryptTask : public BusinessTask<std::string, std::string> {
   public:
-    explicit EncryptTask(TaskContext* tc) : BusinessTask<void, int>(tc) {}
+    explicit EncryptTask(TaskContext* tc) : BusinessTask<std::string, std::string>(tc) {}
     ~EncryptTask() override = default;
 
   public:

@@ -47,11 +47,17 @@ class BaseTask : public Task<I, O> {
     }
 
   public:
-    void SetParam(I* param) override { params_ = param; }
+    void SetParam(I param) override { params_ = param; }
 
-    void TaskSuccess(O* param) override {
+    void TaskSuccess(O param) override {
         if (listener_) {
             listener_->OnSuccess(param);
+        }
+    }
+
+    void TaskFailed(O param) override {
+        if (listener_) {
+            listener_->OnFailed(param);
         }
     }
 
@@ -63,7 +69,7 @@ class BaseTask : public Task<I, O> {
 
   protected:
     TaskContext* task_context_ = nullptr;
-    I* params_ = nullptr;
+    I params_;
 
   private:
     TaskListener<O>* listener_ = nullptr;
