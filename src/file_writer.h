@@ -6,7 +6,7 @@
 
 #include <cstdint>
 
-#include "file_queue.h"
+#include "log_files.h"
 
 namespace autumn {
 
@@ -19,20 +19,7 @@ class FileWriter {
     uint64_t Write(const std::string& data);
 
   private:
-    std::time_t ModifyTime();
-    std::string GetNextFileName();
-    void OpenNewFile();
-    bool OpenOldFile();
-
-  private:
-    const size_t max_files_;
-    const size_t max_file_size_;
-    const std::string dir_path_;
-    FileQueue* file_queue_ = nullptr;
-    FILE* fp_ = nullptr;
-    std::string file_path_;
-    size_t size_ = 0;
-    size_t index_ = 0;
+    LogDir* log_dir_ = nullptr;
 };
 
 }  // namespace autumn
