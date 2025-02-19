@@ -9,7 +9,7 @@
 
 namespace autumn {
 
-enum class MainType : uint32_t { NORMAL, EVENT, STATISTICS, DUMP };
+enum class AutumnId : uint32_t { NORMAL, EVENT, STATISTICS, DUMP };
 
 struct LogConfig {
     const std::string work_dir;
