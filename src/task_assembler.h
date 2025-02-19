@@ -26,7 +26,7 @@ class TaskAssembler {
     TaskContext* task_context_ = nullptr;
 
   private:
-    BaseTask<std::string, std::string>* task_list_ = nullptr;
+    BaseTask<void, int>* task_list_ = nullptr;
 };
 
 }  // namespace autumn

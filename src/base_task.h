@@ -4,44 +4,60 @@
 
 #pragma once
 
-#define EXPORT __attribute__((visibility("default")))
+#include "task_bridge.h"
 
 namespace autumn {
 
 class TaskContext;
 
-template <typename I, typename O>
+template <typename O, typename X>
 class TaskBridge;
+
+template <typename O, typename X>
+class ThenTaskBridge;
+
+template <typename O, typename X>
+class FollowTaskBridge;
 
 template <typename I, typename O>
 class BaseTask {
   public:
-    explicit BaseTask(TaskContext* tc);
-    virtual ~BaseTask();
+    explicit BaseTask(TaskContext* tc) : task_context_(tc) {}
+    virtual ~BaseTask() = default;
 
   public:
     /**
      * 设置任务参数
      */
-    void SetParam(I* param);
+    void SetParam(I* param) { params_ = param; }
 
     /**
      * 追加任务
-     * @tparam Y
+     * @tparam X
      * @param task
      * @return
      */
-    template <typename Y>
-    BaseTask<O, Y>* Then(BaseTask<O, Y>* task);
+    template <typename X>
+    BaseTask<O, X>* Then(BaseTask<O, X>* task) {
+        auto* bridge_ = new ThenTaskBridge<O, X>();
+        bridge_->SetTask(task);
+        listener_ = bridge_;
+        return task;
+    }
 
     /**
      * 追加任务
-     * @tparam Y
+     * @tparam X
      * @param task
      * @return
      */
-    template <typename Y>
-    BaseTask<O, Y>* Follow(BaseTask<O, Y>* task);
+    template <typename X>
+    BaseTask<O, X>* Follow(BaseTask<O, X>* task) {
+        auto* bridge_ = new FollowTaskBridge<O, X>();
+        bridge_->SetTask(task);
+        listener_ = bridge_;
+        return task;
+    }
 
   public:
     /**
@@ -58,19 +74,27 @@ class BaseTask {
     /**
      * 任务成功
      */
-    void TaskSuccess(O* param);
+    void TaskSuccess(O* param) {
+        if (listener_) {
+            listener_->OnSuccess(param);
+        }
+    }
 
     /**
      * 任务失败
      */
-    void TaskFailed();
+    void TaskFailed() {
+        if (listener_) {
+            listener_->OnFailed();
+        }
+    }
 
   private:
     TaskContext* task_context_ = nullptr;
     I* params_ = nullptr;
 
   private:
-    TaskBridge<I, O>* bridge_ = nullptr;
+    TaskListener<O>* listener_ = nullptr;
 };
 
 }  // namespace autumn

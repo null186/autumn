@@ -6,12 +6,10 @@
 
 namespace autumn {
 
-EncryptTask::EncryptTask(TaskContext* tc) : BusinessTask<std::string, std::string>(tc) {}
-
-EncryptTask::~EncryptTask() = default;
-
 void EncryptTask::Start() {
-    BaseTask<std::string, std::string>::TaskSuccess(nullptr);
+    BaseTask<void, int>::TaskSuccess(nullptr);
 }
+
+void EncryptTask::Finish() {}
 
 }  // namespace autumn

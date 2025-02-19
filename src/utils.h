@@ -7,6 +7,8 @@
 #include <cstdint>
 #include <string>
 
+#define EXPORT __attribute__((visibility("default")))
+
 namespace autumn {
 
 class Utils {

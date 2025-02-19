@@ -7,12 +7,13 @@
 namespace autumn {
 
 template <typename I, typename O>
-BusinessTask<I, O>::BusinessTask(TaskContext* tc) : BaseTask<I, O>(tc) {}
+void BusinessTask<I, O>::Start() {
+    std::cout << "Start" << std::endl;
+}
 
 template <typename I, typename O>
-void BusinessTask<I, O>::Start() {}
-
-template <typename I, typename O>
-void BusinessTask<I, O>::Finish() {}
+void BusinessTask<I, O>::Finish() {
+    std::cout << "Finish" << std::endl;
+}
 
 }  // namespace autumn

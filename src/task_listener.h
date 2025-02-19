@@ -6,9 +6,10 @@
 
 namespace autumn {
 
-template <typename I, typename O>
+template <typename O>
 class TaskListener {
   public:
+    TaskListener() = default;
     virtual ~TaskListener() = default;
 
   public:

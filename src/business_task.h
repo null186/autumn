@@ -13,9 +13,7 @@ namespace autumn {
 template <typename I, typename O>
 class BusinessTask : public BaseTask<I, O> {
   public:
-    explicit BusinessTask(TaskContext* tc);
-
-  protected:
+    explicit BusinessTask(TaskContext* tc) : BaseTask<I, O>(tc) {}
     ~BusinessTask() override = default;
 
   public:

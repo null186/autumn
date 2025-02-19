@@ -10,13 +10,14 @@
 
 namespace autumn {
 
-class EncryptTask : public BusinessTask<std::string, std::string> {
+class EncryptTask : public BusinessTask<void, int> {
   public:
-    explicit EncryptTask(TaskContext* tc);
-    ~EncryptTask() override;
+    explicit EncryptTask(TaskContext* tc) : BusinessTask<void, int>(tc) {}
+    ~EncryptTask() override = default;
 
   public:
     void Start() override;
+    void Finish() override;
 };
 
 }  // namespace autumn
