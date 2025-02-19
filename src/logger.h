@@ -22,16 +22,16 @@ struct Message {
     uint32_t line = 0;
     /* The thread ID for the log message. */
     uint64_t thread_id = 0;
-    /* {@link LogType} values. */
-    LogType log_type = LogType::DEFAULT;
     /* {@link LogPriority} values. */
-    LogPriority priority = LogPriority::DEFAULT;
+    char priority = '?';
+    /* The tag for the log message. */
+    char tag[16] = {};
+    /* Optional function name, may be set to nullptr. */
+    char file[16] = {};
+    /* {@link LogType} values. */
+    char type[16] = {};
     /* The time for the log message. */
     char time[32] = {};
-    /* The tag for the log message. */
-    char tag[16] = {};  // TODO: 超出则截断。
-    /* Optional file name, may be set to nullptr. */
-    char file[16] = {};  // TODO: 超出则截断。
     /* The log message itself. */
     std::string content{};
 };

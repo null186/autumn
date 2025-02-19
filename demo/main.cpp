@@ -6,20 +6,19 @@
 
 using namespace autumn;
 int main() {
-    const char* tag = "Test";
-    const char* content = "Hello World!";
-
     logger_t logger = 0;
     create_logger(&logger);
 
-    log_print(logger, LogType::MAIN, LogPriority::UNKNOWN, tag, "%s", content);
-    log_print(logger, LogType::RADIO, LogPriority::DEFAULT, tag, "%s", content);
-    log_print(logger, LogType::EVENTS, LogPriority::VERBOSE, tag, "%s", content);
-    log_print(logger, LogType::SYSTEM, LogPriority::DEBUG, tag, "%s", content);
-    log_print(logger, LogType::CRASH, LogPriority::INFO, tag, "%s", content);
-    log_print(logger, LogType::STATS, LogPriority::WARN, tag, "%s", content);
-    log_print(logger, LogType::SECURITY, LogPriority::ERROR, tag, "%s", content);
-    log_print(logger, LogType::KERNEL, LogPriority::FATAL, tag, "%s", content);
+    log_print(logger, LogType::MAIN, LogPriority::VERBOSE, "Network", __FILE_NAME__, __LINE__, "%s",
+              "Hello Main!");
+    log_print(logger, LogType::RADIO, LogPriority::DEBUG, "Sim", __FILE_NAME__, __LINE__, "%s",
+              "Hello Radio!");
+    log_print(logger, LogType::SYSTEM, LogPriority::INFO, "Service", __FILE_NAME__, __LINE__, "%s",
+              "Hello System!");
+    log_print(logger, LogType::SECURITY, LogPriority::WARN, "Hook", __FILE_NAME__, __LINE__, "%s",
+              "Hello Security!");
+    log_print(logger, LogType::KERNEL, LogPriority::ERROR, "Thread", __FILE_NAME__, __LINE__, "%s",
+              "Hello Kernel!");
 
     destroy_logger(logger);
     return 0;
