@@ -95,19 +95,16 @@ void log_print(logger_t logger, LogType type, LogPriority pri, const char* tag, 
 
     std::va_list v;
     va_start(v, fmt);
-    do {
-        std::va_list c;
-        va_copy(c, v);
-        int size = std::vsnprintf(nullptr, 0, fmt, c);
-        if (size <= 0) {
-            ilog << "log print format error." << end_line;
-            break;
-        }
+    std::va_list c;
+    va_copy(c, v);
+    int size = std::vsnprintf(nullptr, 0, fmt, c);
+    if (size > 0) {
         log_message.message.resize(size + 1);
         std::vsnprintf(&log_message.message[0], size + 1, fmt, v);
         auto* p = reinterpret_cast<Logger*>(logger);
         p->Print(log_message);
-    } while (false);
+    }
+    ilog << "log print format error." << end_line;
     va_end(v);
 }
 
