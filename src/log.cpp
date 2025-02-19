@@ -96,6 +96,7 @@ void log_print(logger_t logger, LogType type, LogPriority pri, const char* tag, 
         va_copy(c, v);
         int size = std::vsnprintf(nullptr, 0, fmt, c);
         if (size <= 0) {
+            ilog << "log print format error." << end_line;
             break;
         }
         log_message.message.resize(size + 1);
