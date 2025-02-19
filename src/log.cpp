@@ -54,8 +54,8 @@ std::string filter_type_to_name(LogType type) {
     }
 }
 
-int create_logger(logger_t* logger_out) {
-    *logger_out = reinterpret_cast<logger_t>(new Logger());
+int create_logger(logger_t* logger_out, const LogConfig& log_config) {
+    *logger_out = reinterpret_cast<logger_t>(new Logger(log_config));
     return 0;
 }
 

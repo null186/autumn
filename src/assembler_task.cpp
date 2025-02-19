@@ -3,6 +3,7 @@
 //
 
 #include "assembler_task.h"
+
 #include "compress_task.h"
 #include "encrypt_task.h"
 #include "format_task.h"

@@ -3,11 +3,13 @@
 //
 
 #include "autumn/log.h"
+#include "autumn/config.h"
 
 using namespace autumn;
 int main() {
+    autumn::LogConfig log_config("./", 20, 1024);
     logger_t logger = 0;
-    create_logger(&logger);
+    create_logger(&logger, log_config);
 
     log_print(logger, LogType::MAIN, LogPriority::VERBOSE, "Network", __FILE_NAME__, __LINE__, "%s",
               "Hello Main!");

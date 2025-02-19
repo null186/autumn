@@ -11,18 +11,18 @@
 
 namespace autumn {
 
-autumn::Logger::Logger() {
-    task_context_ = new TaskContext();
+Logger::Logger(const LogConfig& log_config) {
+    task_context_ = new TaskContext(log_config);
     assembler_ = new AssemblerTask(task_context_);
     assembler_->Assembler();
 }
 
-autumn::Logger::~Logger() {
+Logger::~Logger() {
     delete assembler_;
     delete task_context_;
 }
 
-void autumn::Logger::Print(Message message) {
+void Logger::Print(Message message) {
     assembler_->SetParam(std::move(message));
     assembler_->Start();
 }

@@ -5,15 +5,19 @@
 #pragma once
 
 #include <string>
+#include <utility>
 
 namespace autumn {
 
 enum class MainType : uint32_t { NORMAL, EVENT, STATISTICS, DUMP };
 
 struct LogConfig {
-    const std::string work_dir = "/tmp/autumn/log";
-    const size_t max_files = 20;
-    const size_t max_file_size = 1024;  // KB
+    const std::string work_dir;
+    const size_t max_files;
+    const size_t max_file_size;  // KB
+
+    LogConfig(std::string work_dir, const size_t max_files, const size_t max_file_size)
+        : work_dir(std::move(work_dir)), max_files(max_files), max_file_size(max_file_size) {}
 };
 
 struct EventConfig {};

@@ -4,12 +4,24 @@
 
 #pragma once
 
+#include <utility>
+
+#include "autumn/config.h"
+
 namespace autumn {
 
 class TaskContext {
   public:
-    TaskContext() = default;
+    explicit TaskContext(LogConfig log_config) : log_config_(std::move(log_config)) {}
     ~TaskContext() = default;
+
+  public:
+    const std::string& GetWorkDir() const { return log_config_.work_dir; }
+    size_t GetMaxFiles() const { return log_config_.max_files; }
+    size_t GetMaxFileSize() const { return log_config_.max_file_size; }
+
+  private:
+    const LogConfig log_config_;
 };
 
 }  // namespace autumn

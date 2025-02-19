@@ -13,6 +13,8 @@
 
 namespace autumn {
 
+struct LogConfig;
+
 enum class LogPriority : uint32_t {
     UNKNOWN = 0,
     DEFAULT,  // only for minimum_priority().
@@ -45,7 +47,7 @@ std::string filter_type_to_name(LogType type);
 
 typedef long logger_t;
 
-int create_logger(logger_t* logger_out);
+int create_logger(logger_t* logger_out, const LogConfig& log_config);
 
 void destroy_logger(logger_t logger);
 

@@ -12,6 +12,7 @@
 
 namespace autumn {
 
+struct LogConfig;
 class TaskContext;
 class AssemblerTask;
 
@@ -38,7 +39,7 @@ struct Message {
 
 class Logger {
   public:
-    Logger();
+    explicit Logger(const LogConfig& log_config);
 
     virtual ~Logger();
 
