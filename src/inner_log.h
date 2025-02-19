@@ -28,7 +28,9 @@ class InnerLog {
 
     template <typename T>
     inline const InnerLog& operator<<(const T& t) const {
+#ifdef AUTUMN_DEBUG
         std::cout << t;
+#endif
         return *this;
     }
 

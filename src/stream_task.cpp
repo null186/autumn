@@ -4,12 +4,16 @@
 
 #include "stream_task.h"
 
-#include "inner_log.h"
+#define PRINT_TO_STDOUT(s)    \
+    do {                      \
+        printf("%s\n", s);    \
+        (void)fflush(stdout); \
+    } while (0)
 
 namespace autumn {
 
 void StreamTask::Start() {
-    ilog << params_ << end_line;
+    PRINT_TO_STDOUT(params_.c_str());
     BusinessTask<std::string, std::string>::TaskSuccess(params_);
 }
 
