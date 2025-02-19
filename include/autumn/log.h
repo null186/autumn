@@ -48,7 +48,7 @@ void destroy_logger(logger_t logger);
 void log_print(logger_t logger, LogType type, LogPriority priority, const char* tag,
                const char* fmt, ...) __attribute__((__format__(printf, 5, 6)));
 
-// 记录断言失败，日志级别默认为 FATAL
+// TODO: 记录断言失败，日志级别默认为 FATAL
 void log_assert(logger_t logger, const char* condition, const char* tag, const char* fmt, ...)
         __attribute__((__format__(printf, 4, 5)));
 

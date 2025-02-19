@@ -23,12 +23,12 @@ struct Message {
     LogType log_type = LogType::DEFAULT;
     /* {@link LogPriority} values. */
     LogPriority priority = LogPriority::DEFAULT;
+    /* The time for the log message. */
+    char time[32] = {};
     /* The tag for the log message. */
     char tag[16] = {};  // TODO: 超出则截断。
     /* Optional file name, may be set to nullptr. */
     char file[16] = {};  // TODO: 超出则截断。
-    /* The time for the log message. */
-    char time[32] = {};
     /* The log message itself. */
     std::string content{};
 };
@@ -41,12 +41,6 @@ class Logger {
 
   public:
     void Print(Message message);
-
-  private:
-    //
-
-  private:
-    //
 };
 
 }  // namespace autumn

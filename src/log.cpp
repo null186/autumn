@@ -32,10 +32,11 @@ void log_print(logger_t logger, LogType type, LogPriority priority, const char* 
     message.line = 0;
     message.thread_id = Utils::GetThreadId();
     message.log_type = type;
-    message.priority = priority, strncpy(message.tag, tag, sizeof(message.tag));
-    strncpy(message.file, "", sizeof(message.file));
+    message.priority = priority;
     std::string time = Utils::NsToString(Utils::GetLocalTime());
     strncpy(message.time, time.c_str(), sizeof(message.time));
+    strncpy(message.tag, tag, sizeof(message.tag));
+    strncpy(message.file, "", sizeof(message.file));
 
     va_list v;
     va_start(v, fmt);
@@ -53,12 +54,5 @@ void log_print(logger_t logger, LogType type, LogPriority priority, const char* 
     } while (false);
     va_end(v);
 }
-
-// void log_assert(logger_t logger, const char* condition, const char* tag, const char* fmt, ...) {
-//     Message m;
-//     m.priority = LogPriority::FATAL;
-//     auto* p = reinterpret_cast<Logger*>(logger);
-//     p->Print(m);
-// }
 
 }  // namespace autumn
