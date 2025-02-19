@@ -4,12 +4,17 @@
 
 #include "compress_task.h"
 
+#include "inner_log.h"
+
 namespace autumn {
 
 void autumn::CompressTask::Start() {
-    BaseTask<int, bool>::TaskSuccess(nullptr);
+    ilog << "Compress task start" << end_line;
+    TaskSuccess(nullptr);
 }
 
-void CompressTask::Finish() {}
+void CompressTask::Finish() {
+    ilog << "Compress task finish" << end_line;
+}
 
 }  // namespace autumn

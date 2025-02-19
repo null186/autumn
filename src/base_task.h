@@ -74,7 +74,7 @@ class BaseTask {
     /**
      * 任务成功
      */
-    void TaskSuccess(O* param) {
+    virtual void TaskSuccess(O* param) {
         if (listener_) {
             listener_->OnSuccess(param);
         }
@@ -83,7 +83,7 @@ class BaseTask {
     /**
      * 任务失败
      */
-    void TaskFailed() {
+    virtual void TaskFailed() {
         if (listener_) {
             listener_->OnFailed();
         }

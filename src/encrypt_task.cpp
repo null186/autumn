@@ -4,12 +4,17 @@
 
 #include "encrypt_task.h"
 
+#include "inner_log.h"
+
 namespace autumn {
 
 void EncryptTask::Start() {
-    BaseTask<void, int>::TaskSuccess(nullptr);
+    ilog << "Encrypt task start" << end_line;
+    TaskSuccess(nullptr);
 }
 
-void EncryptTask::Finish() {}
+void EncryptTask::Finish() {
+    ilog << "Encrypt task finish" << end_line;
+}
 
 }  // namespace autumn
