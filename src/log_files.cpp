@@ -7,6 +7,7 @@
 #include <dirent.h>
 #include <sys/stat.h>
 
+#include <cassert>
 #include <regex>
 
 namespace autumn {

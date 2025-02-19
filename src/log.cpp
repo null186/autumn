@@ -5,6 +5,7 @@
 #include "autumn/log.h"
 
 #include <string>
+#include <cassert>
 
 #include "autumn/config.h"
 #include "inner_log.h"
