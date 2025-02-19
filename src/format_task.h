@@ -9,9 +9,9 @@
 
 namespace autumn {
 
-struct Message;
+struct LogMessage;
 
-class FormatTask : public BusinessTask<Message, std::string> {
+class FormatTask : public BusinessTask<LogMessage, LogEntry> {
   public:
     explicit FormatTask(TaskContext* tc) : BusinessTask(tc) {}
     ~FormatTask() override = default;

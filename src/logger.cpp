@@ -4,8 +4,6 @@
 
 #include "logger.h"
 
-#include <utility>
-
 #include "assembler_task.h"
 #include "task_context.h"
 
@@ -22,8 +20,8 @@ Logger::~Logger() {
     delete task_context_;
 }
 
-void Logger::Print(Message message) {
-    assembler_->SetParam(std::move(message));
+void Logger::Print(const LogMessage& message) {
+    assembler_->SetParam(message);
     assembler_->Start();
 }
 

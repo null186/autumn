@@ -9,6 +9,11 @@
 
 #define EXPORT __attribute__((visibility("default")))
 #define UNUSED __attribute__((unused))
+#ifdef AUTUMN_DEBUG
+#define DEBUG_UNUSED __attribute__((unused))
+#else
+#define DEBUG_UNUSED
+#endif
 
 namespace autumn {
 

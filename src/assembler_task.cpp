@@ -13,53 +13,41 @@
 
 namespace autumn {
 
-AssemblerTask::AssemblerTask(TaskContext* tc) : BaseTask<Message, Message>(tc), task_context_(tc) {}
-
-AssemblerTask::~AssemblerTask() {
-    if (format_task_) {
-        delete format_task_;
-    }
-
-    if (compress_task_) {
-        delete compress_task_;
-    }
-
-    if (encrypt_task_) {
-        delete encrypt_task_;
-    }
-
-    if (stream_task_) {
-        delete stream_task_;
-    }
-
-    if (write_task_) {
-        delete write_task_;
-    }
-}
-
-void AssemblerTask::Assembler() {
+AssemblerTask::AssemblerTask(TaskContext* tc)
+    : BaseTask<LogMessage, LogMessage>(tc), task_context_(tc) {
     format_task_ = new FormatTask(task_context_);
     compress_task_ = new CompressTask(task_context_);
     encrypt_task_ = new EncryptTask(task_context_);
     stream_task_ = new StreamTask(task_context_);
     write_task_ = new WriteTask(task_context_);
-
-    BaseTask<Message, Message>::Then(format_task_)
-            ->Then(compress_task_)
-            ->Then(encrypt_task_)
-            ->Then(stream_task_)
-            ->Follow(write_task_);
 }
 
-void AssemblerTask::SetParam(Message param) {
-    BaseTask<Message, Message>::SetParam(param);
+AssemblerTask::~AssemblerTask() {
+    delete format_task_;
+    delete compress_task_;
+    delete encrypt_task_;
+    delete stream_task_;
+    delete write_task_;
+}
+
+void AssemblerTask::Assembler() {
+    BaseTask<LogMessage, LogMessage>::Then(format_task_)
+            ->Then(compress_task_)
+            ->Then(encrypt_task_)
+            ->Then(write_task_)
+            ->Follow(stream_task_);
+}
+
+void AssemblerTask::SetParam(const LogMessage& param) {
+    BaseTask<LogMessage, LogMessage>::SetParam(param);
 }
 
 void AssemblerTask::Start() {
-    if (params_.content.empty()) {
-        BaseTask<Message, Message>::TaskFailed(BaseTask<Message, Message>::params_);
+    // TODO: 详细校验 LogMessage 有效性。
+    if (params_.message.empty()) {
+        BaseTask<LogMessage, LogMessage>::TaskFailed(BaseTask<LogMessage, LogMessage>::params_);
     } else {
-        BaseTask<Message, Message>::TaskSuccess(BaseTask<Message, Message>::params_);
+        BaseTask<LogMessage, LogMessage>::TaskSuccess(BaseTask<LogMessage, LogMessage>::params_);
     }
 }
 

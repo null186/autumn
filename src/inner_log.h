@@ -8,6 +8,8 @@
 #include <iostream>
 #include <string>
 
+#include "utils.h"
+
 #define ilog InnerLog::GetInstance()
 #define end_line InnerLog::GetInstance().GetEnd()
 
@@ -27,7 +29,7 @@ class InnerLog {
     }
 
     template <typename T>
-    inline const InnerLog& operator<<(const T& UNUSED t) const {
+    inline const InnerLog& operator<<(const T& t DEBUG_UNUSED) const {
 #ifdef AUTUMN_DEBUG
         std::cout << t;
 #endif

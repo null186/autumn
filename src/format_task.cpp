@@ -11,14 +11,17 @@
 namespace autumn {
 
 void FormatTask::Start() {
-    ilog << params_.content << end_line;
+    ilog << params_.message << end_line;
 
     char buff[4096] = {0};  // TODO: 超过 4096 截断为多条日志。
     std::snprintf(buff, 4096, "[%s][%" PRIu64 "][%c][%s][%s][%s][%d] %s", params_.time,
                   params_.thread_id, params_.priority, params_.type, params_.tag, params_.file,
-                  params_.line, params_.content.c_str());
+                  params_.line, params_.message.c_str());
 
-    BusinessTask<Message, std::string>::TaskSuccess(std::string(buff));
+    LogEntry log_entry;
+    memcpy(log_entry.type, params_.type, sizeof(log_entry.type));
+    log_entry.entry = std::string(buff);
+    BusinessTask<LogMessage, LogEntry>::TaskSuccess(log_entry);
 }
 
 void FormatTask::Finish() {}

@@ -16,35 +16,39 @@ struct LogConfig;
 class TaskContext;
 class AssemblerTask;
 
-struct Message {
-    /* Must be set to sizeof(Message) and is used for versioning. */
+struct LogMessage {
+    /** Must be set to sizeof(LogMessage) and is used for versioning. */
     size_t struct_size = 0;
-    /* Optional line number, ignore if file is nullptr. */
+    /** Optional line number, ignore if file is nullptr. */
     uint32_t line = 0;
-    /* The thread ID for the log message. */
+    /** The thread ID for the log message. */
     uint64_t thread_id = 0;
-    /* {@link LogPriority} values. */
+    /** The log priority char. */
     char priority = '?';
-    /* The tag for the log message. */
+    /** The tag for the log message. */
     char tag[16] = {};
-    /* Optional function name, may be set to nullptr. */
+    /** Optional function name, may be set to nullptr. */
     char file[16] = {};
-    /* {@link LogType} values. */
+    /** The log type name. */
     char type[16] = {};
-    /* The time for the log message. */
+    /** The time for the log message. */
     char time[32] = {};
-    /* The log message itself. */
-    std::string content{};
+    /** The log message itself. */
+    std::string message{};
 };
 
 class Logger {
   public:
     explicit Logger(const LogConfig& log_config);
-
     virtual ~Logger();
 
   public:
-    void Print(Message message);
+    /**
+     * Print log.
+     *
+     * @param message
+     */
+    void Print(const LogMessage& message);
 
   private:
     TaskContext* task_context_;

@@ -11,11 +11,19 @@ namespace autumn {
 
 enum class AutumnId : uint32_t { NORMAL, EVENT, STATISTICS, DUMP };
 
+/**
+ * Autumn log config.
+ */
 struct LogConfig {
+    /** Work dir. */
     const std::string work_dir;
+    /** Maximum number of files in a log type directory. */
     const size_t max_files;
-    const size_t max_file_size;  // KB
+    /** Maximum size of a log file. */
+    const size_t max_file_size; /* KiB */
+    /** {@link LogPriority} values. */
     const LogType type_mask;
+    /** {@link LogPriority} values. */
     const LogPriority priority;
 
     LogConfig(std::string work_dir, const size_t max_files, const size_t max_file_size,
@@ -27,10 +35,19 @@ struct LogConfig {
           priority(priority) {}
 };
 
+/**
+ * Autumn event config.
+ */
 struct EventConfig {};
 
+/**
+ * Autumn statistics config.
+ */
 struct StatisticsConfig {};
 
+/**
+ * Autumn dump config.
+ */
 struct DumpConfig {};
 
 }  // namespace autumn

@@ -6,6 +6,7 @@
 
 void autumn::WriteTask::Start() {
     // TODO: 待实现
+    BusinessTask<LogEntry, std::string>::TaskSuccess(params_.entry);
 }
 
 void autumn::WriteTask::Finish() {

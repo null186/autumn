@@ -10,9 +10,9 @@
 
 namespace autumn {
 
-class CompressTask : public BusinessTask<std::string, std::string> {
+class CompressTask : public BusinessTask<LogEntry, LogEntry> {
   public:
-    explicit CompressTask(TaskContext* tc) : BusinessTask<std::string, std::string>(tc) {}
+    explicit CompressTask(TaskContext* tc) : BusinessTask<LogEntry, LogEntry>(tc) {}
     ~CompressTask() override = default;
 
   public:

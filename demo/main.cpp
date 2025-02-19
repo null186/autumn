@@ -2,8 +2,8 @@
 // Created by J Chen on 2023/11/14.
 //
 
-#include "autumn/log.h"
 #include "autumn/config.h"
+#include "autumn/log.h"
 
 using namespace autumn;
 int main() {
@@ -21,6 +21,8 @@ int main() {
               "Hello Security!");
     log_print(logger, LogType::KERNEL, LogPriority::ERROR, "Thread", __FILE_NAME__, __LINE__, "%s",
               "Hello Kernel!");
+
+    log_print(logger, LogType::KERNEL, LogPriority::ERROR, "", "", 0, nullptr);
 
     destroy_logger(logger);
     return 0;

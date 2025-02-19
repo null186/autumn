@@ -47,15 +47,18 @@ class BaseTask : public Task<I, O> {
     }
 
   public:
-    void SetParam(I param) override { params_ = param; }
+    void SetParam(const I& param) override {
+        // TODO: 如果日志量大，这里每条日志都需要拷贝多次浪费性能。
+        params_ = param;
+    }
 
-    void TaskSuccess(O param) override {
+    void TaskSuccess(const O& param) override {
         if (listener_) {
             listener_->OnSuccess(param);
         }
     }
 
-    void TaskFailed(O param) override {
+    void TaskFailed(const O& param) override {
         if (listener_) {
             listener_->OnFailed(param);
         }

@@ -17,7 +17,7 @@ class EncryptTask;
 class StreamTask;
 class WriteTask;
 
-class AssemblerTask : public BaseTask<Message, Message> {
+class AssemblerTask : public BaseTask<LogMessage, LogMessage> {
   public:
     explicit AssemblerTask(TaskContext* tc);
     ~AssemblerTask() override;
@@ -26,7 +26,7 @@ class AssemblerTask : public BaseTask<Message, Message> {
     void Assembler();
 
   public:
-    void SetParam(Message param) override;
+    void SetParam(const LogMessage& param) override;
     void Start() override;
     void Finish() override;
 

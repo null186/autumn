@@ -6,6 +6,7 @@
 
 #include <string>
 
+#include "inner_log.h"
 #include "logger.h"
 #include "utils.h"
 
@@ -67,20 +68,26 @@ void destroy_logger(logger_t logger) {
 void log_print(logger_t logger, LogType type, LogPriority pri, const char* tag, const char* file,
                uint32_t line, const char* fmt, ...) {
     if (logger == 0) {
+        ilog << "logger is nullptr." << end_line;
         return;
     }
 
-    Message message;
-    message.struct_size = 0;
-    message.line = line;
-    message.thread_id = Utils::ThreadId();
-    message.priority = filter_pri_to_char(pri);
-    std::strncpy(message.tag, tag, sizeof(message.tag));
-    std::strncpy(message.file, file, sizeof(message.file));
+    if (!tag || !file || !fmt) {
+        ilog << "log print param error." << end_line;
+        return;
+    }
+
+    LogMessage log_message;
+    log_message.struct_size = 0;
+    log_message.line = line;
+    log_message.thread_id = Utils::ThreadId();
+    log_message.priority = filter_pri_to_char(pri);
+    std::strncpy(log_message.tag, tag, sizeof(log_message.tag));
+    std::strncpy(log_message.file, file, sizeof(log_message.file));
     std::string type_name = filter_type_to_name(type);
-    std::strncpy(message.type, type_name.c_str(), sizeof(message.type));
+    std::strncpy(log_message.type, type_name.c_str(), sizeof(log_message.type));
     std::string time = Utils::FormattedSTime();
-    std::strncpy(message.time, time.c_str(), sizeof(message.time));
+    std::strncpy(log_message.time, time.c_str(), sizeof(log_message.time));
 
     std::va_list v;
     va_start(v, fmt);
@@ -91,10 +98,10 @@ void log_print(logger_t logger, LogType type, LogPriority pri, const char* tag, 
         if (size <= 0) {
             break;
         }
-        message.content.resize(size + 1);
-        std::vsnprintf(&message.content[0], size + 1, fmt, v);
+        log_message.message.resize(size + 1);
+        std::vsnprintf(&log_message.message[0], size + 1, fmt, v);
         auto* p = reinterpret_cast<Logger*>(logger);
-        p->Print(message);
+        p->Print(log_message);
     } while (false);
     va_end(v);
 }

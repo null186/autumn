@@ -10,6 +10,13 @@
 
 namespace autumn {
 
+struct LogEntry {
+    /** The log type name. */
+    char type[16] = {};
+    /** The log entry itself. */
+    std::string entry{};
+};
+
 template <typename I, typename O>
 class BusinessTask : public BaseTask<I, O> {
   public:
@@ -17,8 +24,8 @@ class BusinessTask : public BaseTask<I, O> {
     ~BusinessTask() override = default;
 
   public:
-    void TaskSuccess(O param) override { BaseTask<I, O>::TaskSuccess(param); }
-    void TaskFailed(O param) override { BaseTask<I, O>::TaskFailed(param); }
+    void TaskSuccess(const O& param) override { BaseTask<I, O>::TaskSuccess(param); }
+    void TaskFailed(const O& param) override { BaseTask<I, O>::TaskFailed(param); }
 };
 
 }  // namespace autumn
