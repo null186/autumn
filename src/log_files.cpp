@@ -58,12 +58,11 @@ LogDir::LogDir(size_t max_files, size_t max_file_size, std::string dir_path)
 }
 
 LogDir::~LogDir() {
+    if (!list_.empty()) {
+        list_.back()->Close();
+    }
     for (auto item : list_) {
-        if (!item) {
-            break;
-        }
-
-        item->Close();
+        assert(item);
         delete item;
     }
 }
@@ -96,13 +95,16 @@ void LogDir::Init() {
         list_.push_back(new LogFile(max_file_size_, std::stoi(index), path, s.st_mtime, s.st_size));
     }
 
+    assert(list_.size() <= max_files_);
     if (list_.empty()) {
         return;
     }
 
-    list_.sort([](LogFile* a, LogFile* b) { return a->ModifyTime() < b->ModifyTime(); });
+    list_.sort([](const LogFile* a, const LogFile* b) {
+        assert(a && b);
+        return a->ModifyTime() < b->ModifyTime();
+    });
     list_.back()->Open();
-    assert(list_.size() <= max_files_);
 }
 
 LogFile* LogDir::GetLogFile(size_t size) {
@@ -116,25 +118,25 @@ LogFile* LogDir::GetLogFile(size_t size) {
 }
 
 void LogDir::RollFile() {
-    size_t index = list_.back()->Index();
-    if (++index >= max_files_) {
-        index = 0;
+    size_t index = 0;
+    if (!list_.empty()) {
+        index = (list_.back()->Index() + 1) % max_files_;
+        list_.back()->Close();
     }
     std::string path = kPrefix + std::to_string(index) + kExtension;
-    auto log_file = new LogFile(max_file_size_, index, path);
-    list_.back()->Close();
-    log_file->Open();
-    list_.push_back(log_file);
+    auto new_file = new LogFile(max_file_size_, index, path);
+    list_.push_back(new_file);
 
-    if (list_.size() <= max_files_) {
-        return;
+    if (list_.size() > max_files_) {
+        size_t oversize = list_.size() - max_files_;
+        for (size_t i = 0; i < oversize; ++i) {
+            auto* oldest_file = list_.front();
+            oldest_file->Remove();
+            delete oldest_file;
+            list_.pop_front();
+        }
     }
-
-    size_t oversize = list_.size() - max_files_;
-    for (size_t i = 0; i <= oversize; ++i) {
-        list_.front()->Remove();
-        list_.pop_front();
-    }
+    list_.back()->Open();
 }
 
 }  // namespace autumn
