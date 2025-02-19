@@ -5,6 +5,7 @@
 #pragma once
 
 #include <cstdint>
+#include <mutex>
 
 #include "log_files.h"
 
@@ -19,6 +20,7 @@ class FileWriter {
     uint64_t Write(const std::string& data);
 
   private:
+    std::mutex mutex_;
     LogDir* log_dir_ = nullptr;
 };
 

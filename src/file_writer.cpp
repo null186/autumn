@@ -16,6 +16,7 @@ FileWriter::~FileWriter() {
 }
 
 uint64_t FileWriter::Write(const std::string& data) {
+    std::lock_guard<std::mutex> lock_guard(mutex_);
     if (!log_dir_) {
         return 0;
     }
