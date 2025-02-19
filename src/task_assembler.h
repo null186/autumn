@@ -6,27 +6,32 @@
 
 #include <vector>
 
+#include "base_task.h"
+
 namespace autumn {
 
-class TaskContext;
+class EncryptTask;
+class CompressTask;
 
-template <typename I, typename O>
-class BaseTask;
-
-class TaskAssembler {
+class TaskAssembler : public BaseTask<void, void> {
   public:
     explicit TaskAssembler(TaskContext* tc);
-    virtual ~TaskAssembler();
+    ~TaskAssembler() override;
 
   public:
     void Assembler();
-    void Start();
+
+  public:
+    void SetParam(void* param) override;
+    void Start() override;
+    void Finish() override;
 
   private:
     TaskContext* task_context_ = nullptr;
 
   private:
-    BaseTask<void, int>* task_list_ = nullptr;
+    EncryptTask* encrypt_task_ = nullptr;
+    CompressTask* compress_task_ = nullptr;
 };
 
 }  // namespace autumn

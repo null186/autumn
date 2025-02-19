@@ -38,7 +38,7 @@ class ThenTaskBridge : public TaskBridge<O, X> {
     ~ThenTaskBridge() override = default;
 
   public:
-    void OnSuccess(O* param) {
+    void OnSuccess(O* param) override {
         auto* next_task = TaskBridge<O, X>::next_task_;
         if (!next_task) {
             return;
@@ -47,7 +47,7 @@ class ThenTaskBridge : public TaskBridge<O, X> {
         next_task->Start();
     }
 
-    void OnFailed() {
+    void OnFailed() override {
         auto* next_task = TaskBridge<O, X>::next_task_;
         if (!next_task) {
             return;
@@ -68,7 +68,7 @@ class FollowTaskBridge : public TaskBridge<O, X> {
     ~FollowTaskBridge() override = default;
 
   public:
-    void OnSuccess(O* param) {
+    void OnSuccess(O* param) override {
         auto* next_task = TaskBridge<O, X>::next_task_;
         if (!next_task) {
             return;
@@ -77,7 +77,7 @@ class FollowTaskBridge : public TaskBridge<O, X> {
         next_task->Start();
     }
 
-    void OnFailed() {
+    void OnFailed() override {
         auto* next_task = TaskBridge<O, X>::next_task_;
         if (!next_task) {
             return;

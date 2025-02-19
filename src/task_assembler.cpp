@@ -9,23 +9,39 @@
 
 namespace autumn {
 
-TaskAssembler::TaskAssembler(TaskContext* tc) : task_context_(tc) {}
+TaskAssembler::TaskAssembler(TaskContext* tc) : BaseTask<void, void>(tc), task_context_(tc) {}
 
 TaskAssembler::~TaskAssembler() {
-    delete task_list_;
+    if (encrypt_task_) {
+        delete encrypt_task_;
+    }
+
+    if (compress_task_) {
+        delete compress_task_;
+    }
 }
 
 void TaskAssembler::Assembler() {
-    auto* encrypt_task = new EncryptTask(task_context_);
-    auto* compress_task = new CompressTask(task_context_);
+    encrypt_task_ = new EncryptTask(task_context_);
+    compress_task_ = new CompressTask(task_context_);
 
-    encrypt_task->Then(compress_task);
+    BaseTask<void, void>::Then(encrypt_task_)->Then(compress_task_);
+}
 
-    task_list_ = encrypt_task;
+void TaskAssembler::SetParam(void* param) {
+    BaseTask::SetParam(param);
 }
 
 void TaskAssembler::Start() {
-    task_list_->Start();
+    if (params_) {
+        BaseTask<void, void>::TaskSuccess(BaseTask<void, void>::params_);
+    } else {
+        BaseTask<void, void>::TaskFailed();
+    }
+}
+
+void TaskAssembler::Finish() {
+    //
 }
 
 }  // namespace autumn

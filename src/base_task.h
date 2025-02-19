@@ -61,7 +61,7 @@ class BaseTask : public Task<I, O> {
         }
     }
 
-  private:
+  protected:
     TaskContext* task_context_ = nullptr;
     I* params_ = nullptr;
 
