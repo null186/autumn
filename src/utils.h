@@ -8,6 +8,7 @@
 #include <string>
 
 #define EXPORT __attribute__((visibility("default")))
+#define UNUSED __attribute__((unused))
 
 namespace autumn {
 

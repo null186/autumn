@@ -6,6 +6,7 @@
 
 #include "task.h"
 #include "task_listener.h"
+#include "utils.h"
 
 namespace autumn {
 
@@ -47,7 +48,7 @@ class ThenTaskBridge : public TaskBridge<O, X> {
         next_task->Start();
     }
 
-    void OnFailed(O param) override {
+    void OnFailed(O UNUSED param) override {
         // TODO: 临时方案
     }
 
