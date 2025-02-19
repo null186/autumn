@@ -7,6 +7,8 @@
 #include <string>
 #include <utility>
 
+#include "log.h"
+
 namespace autumn {
 
 enum class AutumnId : uint32_t { NORMAL, EVENT, STATISTICS, DUMP };
