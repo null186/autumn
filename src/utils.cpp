@@ -42,9 +42,9 @@ inline struct tm* local_time(const time_t* time, struct tm* result) {
 }
 
 std::string autumn::Utils::NsToString(int64_t time) {
-    char buff[32] = { 0 };
+    char buff[32] = {0};
     const std::time_t t = time;
-    struct std::tm tm{};
+    struct std::tm tm {};
     local_time(&t, &tm);
     std::strftime(buff, sizeof(buff), "%Y-%m-%d %H:%M:%S", &tm);
     return buff;

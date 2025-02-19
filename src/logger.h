@@ -12,6 +12,9 @@
 
 namespace autumn {
 
+class TaskContext;
+class TaskAssembler;
+
 struct Message {
     /* Must be set to sizeof(Message) and is used for versioning. */
     size_t struct_size = 0;
@@ -41,6 +44,10 @@ class Logger {
 
   public:
     void Print(Message message);
+
+  private:
+    TaskContext* task_context_;
+    TaskAssembler* assembler_;
 };
 
 }  // namespace autumn

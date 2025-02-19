@@ -6,13 +6,22 @@
 
 #include <cinttypes>
 
-#include "utils.h"
+#include "task_assembler.h"
+#include "task_context.h"
 
 namespace autumn {
 
-autumn::Logger::Logger() = default;
+autumn::Logger::Logger() {
+    task_context_ = new TaskContext();
+    assembler_ = new TaskAssembler(task_context_);
 
-autumn::Logger::~Logger() = default;
+    assembler_->Assembler();
+}
+
+autumn::Logger::~Logger() {
+    delete task_context_;
+    delete assembler_;
+}
 
 void autumn::Logger::Print(Message message) {
     char buff[4096] = {0};
@@ -20,6 +29,8 @@ void autumn::Logger::Print(Message message) {
                   message.log_type, message.thread_id, message.tag, message.file, message.line,
                   message.content.c_str());
     printf("%s\n", buff);
+
+    assembler_->Start();
 }
 
 }  // namespace autumn
