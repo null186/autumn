@@ -6,14 +6,14 @@
 
 #include <utility>
 
-#include "task_assembler.h"
+#include "assembler_task.h"
 #include "task_context.h"
 
 namespace autumn {
 
 autumn::Logger::Logger() {
     task_context_ = new TaskContext();
-    assembler_ = new TaskAssembler(task_context_);
+    assembler_ = new AssemblerTask(task_context_);
     assembler_->Assembler();
 }
 

@@ -2,8 +2,7 @@
 // Created by J Chen on 2023/12/2.
 //
 
-#include "task_assembler.h"
-
+#include "assembler_task.h"
 #include "compress_task.h"
 #include "encrypt_task.h"
 #include "format_task.h"
@@ -13,9 +12,9 @@
 
 namespace autumn {
 
-TaskAssembler::TaskAssembler(TaskContext* tc) : BaseTask<Message, Message>(tc), task_context_(tc) {}
+AssemblerTask::AssemblerTask(TaskContext* tc) : BaseTask<Message, Message>(tc), task_context_(tc) {}
 
-TaskAssembler::~TaskAssembler() {
+AssemblerTask::~AssemblerTask() {
     if (format_task_) {
         delete format_task_;
     }
@@ -37,7 +36,7 @@ TaskAssembler::~TaskAssembler() {
     }
 }
 
-void TaskAssembler::Assembler() {
+void AssemblerTask::Assembler() {
     format_task_ = new FormatTask(task_context_);
     compress_task_ = new CompressTask(task_context_);
     encrypt_task_ = new EncryptTask(task_context_);
@@ -51,11 +50,11 @@ void TaskAssembler::Assembler() {
             ->Follow(write_task_);
 }
 
-void TaskAssembler::SetParam(Message param) {
+void AssemblerTask::SetParam(Message param) {
     BaseTask<Message, Message>::SetParam(param);
 }
 
-void TaskAssembler::Start() {
+void AssemblerTask::Start() {
     if (params_.content.empty()) {
         BaseTask<Message, Message>::TaskFailed(BaseTask<Message, Message>::params_);
     } else {
@@ -63,7 +62,7 @@ void TaskAssembler::Start() {
     }
 }
 
-void TaskAssembler::Finish() {
+void AssemblerTask::Finish() {
     // TODO: 待实现
 }
 

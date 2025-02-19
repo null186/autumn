@@ -17,10 +17,10 @@ class EncryptTask;
 class StreamTask;
 class WriteTask;
 
-class TaskAssembler : public BaseTask<Message, Message> {
+class AssemblerTask : public BaseTask<Message, Message> {
   public:
-    explicit TaskAssembler(TaskContext* tc);
-    ~TaskAssembler() override;
+    explicit AssemblerTask(TaskContext* tc);
+    ~AssemblerTask() override;
 
   public:
     void Assembler();
