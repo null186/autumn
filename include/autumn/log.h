@@ -34,14 +34,22 @@ char filter_pri_to_char(LogPriority pri);
  */
 enum class LogType : uint32_t {
     MIN = 0,
-    MAIN,
-    RADIO,
-    SYSTEM,
-    SECURITY,
-    KERNEL,
-    MAX,
-    DEFAULT = 0x7FFFFFFF
+    MAIN = 1 << 0,
+    RADIO = 1<< 1,
+    SYSTEM = 1 << 2,
+    SECURITY = 1<< 3,
+    KERNEL = 1 << 4,
+    DEFAULT = MAIN | RADIO | SYSTEM | SECURITY | KERNEL,
+    MAX = 1 << 30
 };
+
+inline constexpr LogType operator&(LogType x, LogType y) {
+    return static_cast<LogType>(static_cast<uint32_t>(x) & static_cast<uint32_t>(y));
+}
+
+inline constexpr LogType operator|(LogType x, LogType y) {
+    return static_cast<LogType>(static_cast<uint32_t>(x) | static_cast<uint32_t>(y));
+}
 
 std::string filter_type_to_name(LogType type);
 
