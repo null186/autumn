@@ -6,6 +6,7 @@
 
 #include <string>
 
+#include "autumn/config.h"
 #include "inner_log.h"
 #include "logger.h"
 #include "utils.h"
@@ -56,6 +57,9 @@ std::string filter_type_to_name(LogType type) {
 }
 
 int create_logger(logger_t* logger_out, const LogConfig& log_config) {
+    assert(!log_config.work_dir.empty());
+    assert(log_config.max_files != 0);
+    assert(log_config.max_file_size != 0);
     *logger_out = reinterpret_cast<logger_t>(new Logger(log_config));
     return 0;
 }
