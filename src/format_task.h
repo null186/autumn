@@ -13,7 +13,7 @@ struct LogMessage;
 
 class FormatTask : public BusinessTask<LogMessage, LogEntry> {
   public:
-    explicit FormatTask(TaskContext* tc) : BusinessTask(tc) {}
+    explicit FormatTask(TaskContext* tc) : BusinessTask<LogMessage, LogEntry>(tc) {}
     ~FormatTask() override = default;
 
   public:

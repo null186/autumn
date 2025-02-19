@@ -10,7 +10,7 @@ namespace autumn {
 
 class WriteTask : public BusinessTask<LogEntry, std::string> {
   public:
-    explicit WriteTask(TaskContext* tc) : BusinessTask(tc) {}
+    explicit WriteTask(TaskContext* tc) : BusinessTask<LogEntry, std::string>(tc) {}
     ~WriteTask() override = default;
 
   public:
