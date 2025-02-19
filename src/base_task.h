@@ -15,7 +15,13 @@ template <typename I, typename O>
 class BaseTask : public Task<I, O> {
   public:
     explicit BaseTask(TaskContext* tc) : task_context_(tc) {}
-    virtual ~BaseTask() = default;
+
+    virtual ~BaseTask() {
+        if (listener_) {
+            delete listener_;
+            listener_ = nullptr;
+        }
+    }
 
   public:
     /**
