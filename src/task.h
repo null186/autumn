@@ -10,29 +10,30 @@ class Task {
     Task() = default;
     virtual ~Task() = default;
 
-  public:
+  public:  // TODO: 按照 task 生命周期来调整虚函数顺序
     /**
-     * 设置任务参数
+     * Set task param.
      */
     virtual void SetParam(I* param) = 0;
 
     /**
-     * 任务开始
+     * Task start.
      */
     virtual void Start() = 0;
 
     /**
-     * 任务结束
+     * Task finish.
      */
     virtual void Finish() = 0;
 
     /**
-     * 任务成功
+     * Task success.
+     * @param param Input param.
      */
     virtual void TaskSuccess(O* param) = 0;
 
     /**
-     * 任务失败
+     * Task Failed.
      */
     virtual void TaskFailed() = 0;
 };

@@ -4,11 +4,16 @@
 
 #pragma once
 
-#include "task_listener.h"
 #include "task.h"
+#include "task_listener.h"
 
 namespace autumn {
 
+/**
+ * Task bridge.
+ * @tparam O The output data type of the current task is also the input data type of the next task.
+ * @tparam X The output data type of the next task.
+ */
 template <typename O, typename X>
 class TaskBridge : public TaskListener<O> {
   public:
@@ -21,6 +26,11 @@ class TaskBridge : public TaskListener<O> {
     Task<O, X>* next_task_ = nullptr;
 };
 
+/**
+ * Then mode task bridge.
+ * If the current task succeeds, the next task is continued.
+ * If the current task fails, the task is not continued.
+ */
 template <typename O, typename X>
 class ThenTaskBridge : public TaskBridge<O, X> {
   public:
@@ -29,15 +39,28 @@ class ThenTaskBridge : public TaskBridge<O, X> {
 
   public:
     void OnSuccess(O* param) {
-        TaskBridge<O, X>::next_task_->SetParam(param);
-        TaskBridge<O, X>::next_task_->Start();
+        auto* next_task = TaskBridge<O, X>::next_task_;
+        if (!next_task) {
+            return;
+        }
+        next_task->SetParam(param);
+        next_task->Start();
     }
 
     void OnFailed() {
-        TaskBridge<O, X>::next_task_->TaskFailed();
+        auto* next_task = TaskBridge<O, X>::next_task_;
+        if (!next_task) {
+            return;
+        }
+        next_task->TaskFailed();
     }
 };
 
+/**
+ * Follow mode task bridge.
+ * Continue to execute the next task regardless of whether the current task is successfully
+ * executed.
+ */
 template <typename O, typename X>
 class FollowTaskBridge : public TaskBridge<O, X> {
   public:
@@ -46,11 +69,21 @@ class FollowTaskBridge : public TaskBridge<O, X> {
 
   public:
     void OnSuccess(O* param) {
-        TaskBridge<O, X>::next_task_->SetParam(param);
-        TaskBridge<O, X>::next_task_->Start();
+        auto* next_task = TaskBridge<O, X>::next_task_;
+        if (!next_task) {
+            return;
+        }
+        next_task->SetParam(param);
+        next_task->Start();
     }
 
-    void OnFailed() { TaskBridge<O, X>::next_task_->Start(); }
+    void OnFailed() {
+        auto* next_task = TaskBridge<O, X>::next_task_;
+        if (!next_task) {
+            return;
+        }
+        next_task->Start();
+    }
 };
 
 template <typename O, typename X>

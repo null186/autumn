@@ -19,10 +19,10 @@ class BaseTask : public Task<I, O> {
 
   public:
     /**
-     * 追加任务
-     * @tparam X
-     * @param task
-     * @return
+     * The task is bridged in Then mode.
+     * @tparam X The output data type of the next task.
+     * @param task Next task.
+     * @return Next task.
      */
     template <typename X>
     BaseTask<O, X>* Then(BaseTask<O, X>* task) {
@@ -33,10 +33,10 @@ class BaseTask : public Task<I, O> {
     }
 
     /**
-     * 追加任务
-     * @tparam X
-     * @param task
-     * @return
+     * The task is bridged in Follow mode.
+     * @tparam X The output data type of the next task.
+     * @param task Next task.
+     * @return Next task.
      */
     template <typename X>
     BaseTask<O, X>* Follow(BaseTask<O, X>* task) {
