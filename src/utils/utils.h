@@ -18,10 +18,10 @@
 namespace autumn {
 
 class Utils {
-  public:
-    static uint64_t ThreadId();
-    static int64_t LocalTimeUs();
-    static std::string FormattedSTime();
+ public:
+  static uint64_t ThreadId();
+  static int64_t LocalTimeUs();
+  static std::string FormattedSTime();
 };
 
 }  // namespace autumn

@@ -19,23 +19,23 @@ struct LogConfig;
  * Autumn log priority values, in increasing order of priority.
  */
 enum class LogPriority : uint32_t {
-    UNKNOWN = 0,
-    /** The default priority, for internal use only. */
-    DEFAULT,
-    /** Verbose logging. Should typically be disabled for a release app. */
-    VERBOSE,
-    /** Debug logging. Should typically be disabled for a release app. */
-    DEBUG,
-    /** Informational logging. Should typically be disabled for a release app. */
-    INFO,
-    /** Warning logging. For use with recoverable failures. */
-    WARN,
-    /** Error logging. For use with unrecoverable failures. */
-    ERROR,
-    /** Fatal logging. For use when aborting. */
-    FATAL,
-    /** For internal use only. Must be last. */
-    SILENT,
+  UNKNOWN = 0,
+  /** The default priority, for internal use only. */
+  DEFAULT,
+  /** Verbose logging. Should typically be disabled for a release app. */
+  VERBOSE,
+  /** Debug logging. Should typically be disabled for a release app. */
+  DEBUG,
+  /** Informational logging. Should typically be disabled for a release app. */
+  INFO,
+  /** Warning logging. For use with recoverable failures. */
+  WARN,
+  /** Error logging. For use with unrecoverable failures. */
+  ERROR,
+  /** Fatal logging. For use when aborting. */
+  FATAL,
+  /** For internal use only. Must be last. */
+  SILENT,
 };
 
 /**
@@ -48,26 +48,28 @@ char filter_pri_to_char(LogPriority pri);
 
 /**
  * Here are just a few examples that you can adapt to your use case.
- * The number of type affects the number of folders in the working directory, the total number of
- * files, and the number of open files.
+ * The number of type affects the number of folders in the working directory,
+ * the total number of files, and the number of open files.
  */
 enum class LogType : uint32_t {
-    MIN = 0,
-    MAIN = 1 << 0,
-    RADIO = 1 << 1,
-    SYSTEM = 1 << 2,
-    SECURITY = 1 << 3,
-    KERNEL = 1 << 4,
-    DEFAULT = MAIN | RADIO | SYSTEM | SECURITY | KERNEL,
-    MAX = 1 << 30
+  MIN = 0,
+  MAIN = 1 << 0,
+  RADIO = 1 << 1,
+  SYSTEM = 1 << 2,
+  SECURITY = 1 << 3,
+  KERNEL = 1 << 4,
+  DEFAULT = MAIN | RADIO | SYSTEM | SECURITY | KERNEL,
+  MAX = 1 << 30
 };
 
 inline constexpr LogType operator&(LogType x, LogType y) {
-    return static_cast<LogType>(static_cast<uint32_t>(x) & static_cast<uint32_t>(y));
+  return static_cast<LogType>(static_cast<uint32_t>(x) &
+                              static_cast<uint32_t>(y));
 }
 
 inline constexpr LogType operator|(LogType x, LogType y) {
-    return static_cast<LogType>(static_cast<uint32_t>(x) | static_cast<uint32_t>(y));
+  return static_cast<LogType>(static_cast<uint32_t>(x) |
+                              static_cast<uint32_t>(y));
 }
 
 /**
@@ -108,8 +110,9 @@ void destroy_logger(logger_t logger);
  * @param fmt
  * @param ...
  */
-void log_print(logger_t logger, LogType type, LogPriority pri, const char* tag, const char* fun,
-               uint32_t line, const char* fmt, ...) __attribute__((__format__(printf, 7, 8)));
+void log_print(logger_t logger, LogType type, LogPriority pri, const char* tag,
+               const char* fun, uint32_t line, const char* fmt, ...)
+    __attribute__((__format__(printf, 7, 8)));
 
 /**
  * TODO: 记录断言失败，日志级别默认为 FATAL
@@ -120,8 +123,8 @@ void log_print(logger_t logger, LogType type, LogPriority pri, const char* tag, 
  * @param fmt
  * @param ...
  */
-void log_assert(logger_t logger, const char* condition, const char* tag, const char* fmt, ...)
-        __attribute__((__format__(printf, 4, 5)));
+void log_assert(logger_t logger, const char* condition, const char* tag,
+                const char* fmt, ...) __attribute__((__format__(printf, 4, 5)));
 
 /**
  * TODO: 在捕获到崩溃信号时调用
@@ -133,6 +136,6 @@ void log_assert(logger_t logger, const char* condition, const char* tag, const c
  * @param ...
  */
 void buf_print(int bufID, int priority, const char* tag, const char* fmt, ...)
-        __attribute__((__format__(printf, 4, 5)));
+    __attribute__((__format__(printf, 4, 5)));
 
 }  // namespace autumn

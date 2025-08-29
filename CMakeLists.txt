@@ -6,22 +6,25 @@ add_definitions(
         -O3 -g -W -Wall
 )
 
-
-include_directories(${PROJECT_SOURCE_DIR}/include)
+include_directories(${PROJECT_SOURCE_DIR}/include ${PROJECT_SOURCE_DIR}/src)
 
 aux_source_directory(${PROJECT_SOURCE_DIR}/src AUTUMN_SRC)
+aux_source_directory(${PROJECT_SOURCE_DIR}/src/task AUTUMN_SRC_TASK)
+aux_source_directory(${PROJECT_SOURCE_DIR}/src/utils AUTUMN_SRC_UTILS)
+aux_source_directory(${PROJECT_SOURCE_DIR}/src/writer AUTUMN_SRC_WRITER)
+
+add_library(autumn_shared SHARED ${AUTUMN_SRC} ${AUTUMN_SRC_TASK} ${AUTUMN_SRC_UTILS} ${AUTUMN_SRC_WRITER})
+add_library(autumn_static STATIC ${AUTUMN_SRC} ${AUTUMN_SRC_TASK} ${AUTUMN_SRC_UTILS} ${AUTUMN_SRC_WRITER})
+
+set_target_properties(autumn_shared PROPERTIES OUTPUT_NAME "include/autumn")
+get_target_property(OUTPUT_VALUE autumn_shared OUTPUT_NAME)
+message(STATUS "This is the autumn_shared OUTPUT_NAME: " ${OUTPUT_VALUE})
+
+set_target_properties(autumn_static PROPERTIES OUTPUT_NAME "include/autumn")
+get_target_property(OUTPUT_VALUE autumn_static OUTPUT_NAME)
+message(STATUS "This is the autumn_static OUTPUT_NAME: " ${OUTPUT_VALUE})
+
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
-add_library(autumn_shared SHARED ${AUTUMN_SRC})
-add_library(autumn_static STATIC ${AUTUMN_SRC})
-
-# set_target_properties(autumn_shared PROPERTIES OUTPUT_NAME "include/autumn")
-# get_target_property(OUTPUT_VALUE autumn_shared OUTPUT_NAME)
-# message(STATUS "This is the autumn_shared OUTPUT_NAME: " ${OUTPUT_VALUE})
-
-# set_target_properties(autumn_static PROPERTIES OUTPUT_NAME "include/autumn")
-# get_target_property(OUTPUT_VALUE autumn_static OUTPUT_NAME)
-# message(STATUS "This is the autumn_static OUTPUT_NAME: " ${OUTPUT_VALUE})
-
 link_directories(${LIBRARY_OUTPUT_PATH})
 
 # 链接静态库，在 add_executable 之前
