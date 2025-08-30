@@ -1,4 +1,9 @@
-#pragma once
+//
+// Created by J Chen on 2025/8/30.
+//
+
+#ifndef SRC_TASK_H_
+#define SRC_TASK_H_
 
 #include <chrono>
 #include <future>
@@ -197,9 +202,7 @@ class BaseTask : public Task<I, O> {
     return task;
   }
 
-  void SetParam(const I& param) final {
-    params_ = param;
-  }
+  void SetParam(const I& param) final { params_ = param; }
 
  protected:
   void Success(const O& param) {
@@ -222,3 +225,5 @@ class BaseTask : public Task<I, O> {
 };
 
 }  // namespace autumn
+
+#endif  // SRC_TASK_H_

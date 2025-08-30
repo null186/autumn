@@ -2,11 +2,12 @@
 // Created by J Chen on 2023/12/17.
 //
 
-#pragma once
+#ifndef SRC_TASK_WRITE_H_
+#define SRC_TASK_WRITE_H_
 
-#include "task.h"
-#include "logger.h"
 #include "autumn/config.h"
+#include "logger.h"
+#include "task.h"
 
 namespace autumn {
 
@@ -26,3 +27,5 @@ class WriteTask : public BaseTask<LogEntry, std::string> {
 };
 
 }  // namespace autumn
+
+#endif  // SRC_TASK_WRITE_H_

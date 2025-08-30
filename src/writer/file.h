@@ -2,7 +2,8 @@
 // Created by J Chen on 2023/12/31.
 //
 
-#pragma once
+#ifndef SRC_WRITER_FILE_H_
+#define SRC_WRITER_FILE_H_
 
 #include <cstdint>
 #include <list>
@@ -74,3 +75,5 @@ class FileWriter {
 };
 
 }  // namespace autumn
+
+#endif  // SRC_WRITER_FILE_H_

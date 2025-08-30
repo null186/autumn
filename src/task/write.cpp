@@ -2,10 +2,10 @@
 // Created by J Chen on 2023/12/17.
 //
 
-#include "write_task.h"
+#include "write.h"
 
 #include "utils/inner_log.h"
-#include "writer/file_writer.h"
+#include "writer/file.h"
 
 namespace autumn {
 

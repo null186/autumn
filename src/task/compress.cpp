@@ -2,7 +2,7 @@
 // Created by J Chen on 2023/11/22.
 //
 
-#include "compress_task.h"
+#include "compress.h"
 
 #include "utils/inner_log.h"
 

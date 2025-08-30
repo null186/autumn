@@ -2,10 +2,11 @@
 // Created by J Chen on 2023/12/17.
 //
 
-#pragma once
+#ifndef SRC_TASK_STREAM_H_
+#define SRC_TASK_STREAM_H_
 
-#include "task.h"
 #include "autumn/config.h"
+#include "task.h"
 
 namespace autumn {
 
@@ -20,3 +21,5 @@ class StreamTask : public BaseTask<std::string, std::string> {
   void Finish(const std::string& param) override;
 };
 }  // namespace autumn
+
+#endif  // SRC_TASK_STREAM_H_

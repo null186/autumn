@@ -2,7 +2,8 @@
 // Created by J Chen on 2023/12/2.
 //
 
-#pragma once
+#ifndef SRC_ASSEMBLER_H_
+#define SRC_ASSEMBLER_H_
 
 #include <vector>
 
@@ -38,3 +39,5 @@ class AssemblerTask : public BaseTask<LogMessage, LogMessage> {
 };
 
 }  // namespace autumn
+
+#endif  // SRC_ASSEMBLER_H_

@@ -2,11 +2,12 @@
 // Created by J Chen on 2023/12/17.
 //
 
-#pragma once
+#ifndef SRC_TASK_FORMAT_H_
+#define SRC_TASK_FORMAT_H_
 
-#include "task.h"
-#include "logger.h"
 #include "autumn/config.h"
+#include "logger.h"
+#include "task.h"
 
 namespace autumn {
 
@@ -24,3 +25,5 @@ class FormatTask : public BaseTask<LogMessage, LogEntry> {
 };
 
 }  // namespace autumn
+
+#endif  // SRC_TASK_FORMAT_H_

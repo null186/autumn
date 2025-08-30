@@ -2,7 +2,8 @@
 // Created by J Chen on 2023/11/14.
 //
 
-#pragma once
+#ifndef SRC_UTILS_UTILS_H_
+#define SRC_UTILS_UTILS_H_
 
 #include <cstdint>
 #include <string>
@@ -25,3 +26,5 @@ class Utils {
 };
 
 }  // namespace autumn
+
+#endif  // SRC_UTILS_UTILS_H_

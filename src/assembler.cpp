@@ -5,11 +5,11 @@
 #include "assembler.h"
 
 #include "logger.h"
-#include "task/compress_task.h"
-#include "task/encrypt_task.h"
-#include "task/format_task.h"
-#include "task/stream_task.h"
-#include "task/write_task.h"
+#include "task/compress.h"
+#include "task/encrypt.h"
+#include "task/format.h"
+#include "task/stream.h"
+#include "task/write.h"
 
 namespace autumn {
 

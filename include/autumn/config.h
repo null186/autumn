@@ -2,7 +2,8 @@
 // Created by J Chen on 2023/11/20.
 //
 
-#pragma once
+#ifndef INCLUDE_AUTUMN_CONFIG_H_
+#define INCLUDE_AUTUMN_CONFIG_H_
 
 #include <string>
 #include <utility>
@@ -28,3 +29,5 @@ struct LogConfig {
 };
 
 }  // namespace autumn
+
+#endif  // INCLUDE_AUTUMN_CONFIG_H_

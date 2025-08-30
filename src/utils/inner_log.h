@@ -2,7 +2,8 @@
 // Created by J Chen on 2023/12/14.
 //
 
-#pragma once
+#ifndef SRC_UTILS_INNER_LOG_H_
+#define SRC_UTILS_INNER_LOG_H_
 
 #include <cstdint>
 #include <iostream>
@@ -41,3 +42,5 @@ class InnerLog {
 };
 
 }  // namespace autumn
+
+#endif  // SRC_UTILS_INNER_LOG_H_

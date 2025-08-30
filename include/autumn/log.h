@@ -2,7 +2,8 @@
 // Created by J Chen on 2022/9/25.
 //
 
-#pragma once
+#ifndef INCLUDE_AUTUMN_LOG_H
+#define INCLUDE_AUTUMN_LOG_H
 
 #include <sys/cdefs.h>
 
@@ -139,3 +140,5 @@ void buf_print(int bufID, int priority, const char* tag, const char* fmt, ...)
     __attribute__((__format__(printf, 4, 5)));
 
 }  // namespace autumn
+
+#endif  // INCLUDE_AUTUMN_LOG_H

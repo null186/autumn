@@ -2,7 +2,8 @@
 // Created by J Chen on 2023/11/20.
 //
 
-#pragma once
+#ifndef SRC_LOGGER_H
+#define SRC_LOGGER_H
 
 #include <cstdint>
 #include <cstdio>
@@ -61,3 +62,5 @@ class Logger {
 };
 
 }  // namespace autumn
+
+#endif  // SRC_LOGGER_H
