@@ -4,8 +4,8 @@
 
 #include "write.h"
 
-#include "utils/inner_log.h"
-#include "writer/file.h"
+#include "src/utils/inner_log.h"
+#include "src/writer/file.h"
 
 namespace autumn {
 

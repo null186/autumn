@@ -2,8 +2,8 @@
 // Created by J Chen on 2022/9/25.
 //
 
-#ifndef INCLUDE_AUTUMN_LOG_H
-#define INCLUDE_AUTUMN_LOG_H
+#ifndef INCLUDE_AUTUMN_LOG_H_
+#define INCLUDE_AUTUMN_LOG_H_
 
 #include <sys/cdefs.h>
 
@@ -155,4 +155,4 @@ void buf_print(int bufID, int priority, const char* tag, const char* fmt, ...)
 
 }  // namespace autumn
 
-#endif  // INCLUDE_AUTUMN_LOG_H
+#endif  // INCLUDE_AUTUMN_LOG_H_

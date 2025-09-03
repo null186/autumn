@@ -6,7 +6,7 @@ add_definitions(
         -O3 -g -W -Wall
 )
 
-include_directories(${PROJECT_SOURCE_DIR}/include ${PROJECT_SOURCE_DIR}/src)
+include_directories(${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/include)
 
 aux_source_directory(${PROJECT_SOURCE_DIR}/src AUTUMN_SRC)
 aux_source_directory(${PROJECT_SOURCE_DIR}/src/task AUTUMN_SRC_TASK)

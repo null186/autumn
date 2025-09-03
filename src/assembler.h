@@ -8,13 +8,13 @@
 #include <vector>
 
 #include "autumn/log.h"
-#include "log_def.h"
-#include "task.h"
-#include "task/compress.h"
-#include "task/encrypt.h"
-#include "task/format.h"
-#include "task/stream.h"
-#include "task/write.h"
+#include "src/log_def.h"
+#include "src/task.h"
+#include "src/task/compress.h"
+#include "src/task/encrypt.h"
+#include "src/task/format.h"
+#include "src/task/stream.h"
+#include "src/task/write.h"
 
 namespace autumn {
 

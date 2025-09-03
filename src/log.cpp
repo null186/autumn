@@ -7,10 +7,9 @@
 #include <cassert>
 #include <string>
 
-#include "autumn/log.h"
-#include "logger.h"
-#include "utils/inner_log.h"
-#include "utils/utils.h"
+#include "src/logger.h"
+#include "src/utils/inner_log.h"
+#include "src/utils/utils.h"
 
 namespace autumn {
 

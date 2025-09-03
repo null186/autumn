@@ -6,7 +6,7 @@
 #define SRC_TASK_STREAM_H_
 
 #include "autumn/log.h"
-#include "task.h"
+#include "src/task.h"
 
 namespace autumn {
 
