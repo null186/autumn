@@ -7,8 +7,8 @@
 
 #include <string>
 
-#include "autumn/config.h"
-#include "logger.h"
+#include "autumn/log.h"
+#include "log_def.h"
 #include "task.h"
 
 namespace autumn {

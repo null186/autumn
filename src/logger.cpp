@@ -4,22 +4,15 @@
 
 #include "logger.h"
 
-#include "assembler.h"
-
 namespace autumn {
 
-Logger::Logger(const LogConfig& log_config) {
-  assembler_ = new AssemblerTask(log_config);
-  assembler_->Assembler();
-}
-
-Logger::~Logger() {
-  delete assembler_;
+Logger::Logger(const LogConfig& config) {
+  assembler_ = std::make_unique<Assembler>(config);
+  assembler_->Assemble();
 }
 
 void Logger::Print(const LogMessage& message) {
-  assembler_->SetParam(message);
-  assembler_->Run();
+  assembler_->Run(message);
 }
 
 }  // namespace autumn

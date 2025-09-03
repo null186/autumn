@@ -14,8 +14,6 @@
 
 namespace autumn {
 
-struct LogConfig;
-
 /**
  * Autumn log priority values, in increasing order of priority.
  */
@@ -82,6 +80,22 @@ inline constexpr LogType operator|(LogType x, LogType y) {
 std::string filter_type_to_name(LogType type);
 
 typedef long logger_t;
+
+/**
+ * Autumn log config.
+ */
+struct LogConfig {
+  /** Work dir. */
+  std::string work_dir;
+  /** Maximum number of files in a log type directory. */
+  size_t max_files;
+  /** Maximum size of a log file. */
+  size_t max_file_size; /* KiB */
+  /** {@link LogPriority} values. */
+  LogType type_mask;
+  /** {@link LogPriority} values. */
+  LogPriority priority;
+};
 
 /**
  * Create logger.

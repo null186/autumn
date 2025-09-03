@@ -4,53 +4,26 @@
 
 #include "assembler.h"
 
-#include "logger.h"
-#include "task/compress.h"
-#include "task/encrypt.h"
-#include "task/format.h"
-#include "task/stream.h"
-#include "task/write.h"
-
 namespace autumn {
 
-AssemblerTask::AssemblerTask(const LogConfig& config)
-    : BaseTask<LogMessage, LogMessage>() {
-  format_task_ = new FormatTask(config);
-  compress_task_ = new CompressTask(config);
-  encrypt_task_ = new EncryptTask(config);
-  stream_task_ = new StreamTask(config);
-  write_task_ = new WriteTask(config);
+Assembler::Assembler(const LogConfig& config)
+    : format_task_(std::make_unique<FormatTask>(config)),
+      compress_task_(std::make_unique<CompressTask>(config)),
+      encrypt_task_(std::make_unique<EncryptTask>(config)),
+      stream_task_(std::make_unique<StreamTask>(config)),
+      write_task_(std::make_unique<WriteTask>(config)) {}
+
+void Assembler::Assemble() {
+  format_task_.get()
+      ->Then(compress_task_.get())
+      ->Then(encrypt_task_.get())
+      ->Then(write_task_.get())
+      ->Follow(stream_task_.get());
 }
 
-AssemblerTask::~AssemblerTask() {
-  delete format_task_;
-  delete compress_task_;
-  delete encrypt_task_;
-  delete stream_task_;
-  delete write_task_;
-}
-
-void AssemblerTask::Assembler() {
-  BaseTask<LogMessage, LogMessage>::Then(format_task_)
-      ->Then(compress_task_)
-      ->Then(encrypt_task_)
-      ->Then(write_task_)
-      ->Follow(stream_task_);
-}
-
-void AssemblerTask::Run() {
-  // TODO: 详细校验 LogMessage 有效性。
-  if (params_.message.empty()) {
-    BaseTask<LogMessage, LogMessage>::Failed(
-        BaseTask<LogMessage, LogMessage>::params_);
-  } else {
-    BaseTask<LogMessage, LogMessage>::Success(
-        BaseTask<LogMessage, LogMessage>::params_);
-  }
-}
-
-void AssemblerTask::Finish(const LogMessage& param) {
-  // TODO: 待实现
+void Assembler::Run(const LogMessage& message) {
+  format_task_->SetParam(message);
+  format_task_->Run();
 }
 
 }  // namespace autumn

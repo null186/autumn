@@ -7,35 +7,30 @@
 
 #include <vector>
 
-#include "logger.h"
+#include "autumn/log.h"
+#include "log_def.h"
 #include "task.h"
+#include "task/compress.h"
+#include "task/encrypt.h"
+#include "task/format.h"
+#include "task/stream.h"
+#include "task/write.h"
 
 namespace autumn {
 
-class FormatTask;
-class CompressTask;
-class EncryptTask;
-class StreamTask;
-class WriteTask;
-
-class AssemblerTask : public BaseTask<LogMessage, LogMessage> {
+class Assembler {
  public:
-  explicit AssemblerTask(const LogConfig& config);
-  ~AssemblerTask() override;
-
- public:
-  void Assembler();
-
- public:
-  void Run() override;
-  void Finish(const LogMessage& param) override;
+  explicit Assembler(const LogConfig& config);
+  ~Assembler() = default;
+  void Assemble();
+  void Run(const LogMessage& message);
 
  private:
-  FormatTask* format_task_ = nullptr;
-  CompressTask* compress_task_ = nullptr;
-  EncryptTask* encrypt_task_ = nullptr;
-  StreamTask* stream_task_ = nullptr;
-  WriteTask* write_task_ = nullptr;
+  std::unique_ptr<FormatTask> format_task_;
+  std::unique_ptr<CompressTask> compress_task_;
+  std::unique_ptr<EncryptTask> encrypt_task_;
+  std::unique_ptr<StreamTask> stream_task_;
+  std::unique_ptr<WriteTask> write_task_;
 };
 
 }  // namespace autumn

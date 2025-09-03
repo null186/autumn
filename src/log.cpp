@@ -7,7 +7,7 @@
 #include <cassert>
 #include <string>
 
-#include "autumn/config.h"
+#include "autumn/log.h"
 #include "logger.h"
 #include "utils/inner_log.h"
 #include "utils/utils.h"

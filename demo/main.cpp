@@ -5,7 +5,6 @@
 #include <thread>
 #include <vector>
 
-#include "autumn/config.h"
 #include "autumn/log.h"
 
 using namespace autumn;
