@@ -10,8 +10,6 @@
 #include <string>
 #include <thread>
 
-#define UNUSED __attribute__((unused))
-
 namespace autumn {
 
 template <typename I, typename O>
@@ -90,7 +88,7 @@ class ThenTaskBridge final : public TaskBridge<I, O, X> {
     next_task->Run();
   }
 
-  void OnFailed(const O& UNUSED param) override {
+  void OnFailed(const O& param) override {
     auto* current_task = TaskBridge<I, O, X>::GetCurrentTask();
     if (!current_task) {
       return;
@@ -177,8 +175,7 @@ class BaseTask : public Task<I, O> {
    */
   template <typename X>
   BaseTask<O, X>* Then(BaseTask<O, X>* task) {
-    std::unique_ptr<ThenTaskBridge<I, O, X>> bridge(
-        new ThenTaskBridge<I, O, X>());
+    auto bridge = std::make_unique<ThenTaskBridge<I, O, X>>();
     bridge->SetCurrentTask(this);
     bridge->SetNextTask(task);
     listener_ = std::move(bridge);
@@ -194,8 +191,7 @@ class BaseTask : public Task<I, O> {
    */
   template <typename X>
   BaseTask<O, X>* Follow(BaseTask<O, X>* task) {
-    std::unique_ptr<FollowTaskBridge<I, O, X>> bridge(
-        new FollowTaskBridge<I, O, X>());
+    auto bridge = std::make_unique<FollowTaskBridge<I, O, X>>();
     bridge->SetCurrentTask(this);
     bridge->SetNextTask(task);
     listener_ = std::move(bridge);
