@@ -10,13 +10,13 @@ namespace autumn {
 
 void autumn::CompressTask::Run() {
   ilog << "Compress task start" << end_line;
-  // TODO: 待实现
+  // TODO(null186): 待实现
   Success(params_);
 }
 
 void CompressTask::Finish(const LogEntry& param) {
   ilog << "Compress task finish" << end_line;
-  // TODO: 待实现
+  // TODO(null186): 待实现
 }
 
 }  // namespace autumn
