@@ -56,10 +56,7 @@ LogDir::~LogDir() {
   if (!list_.empty()) {
     list_.back()->Close();
   }
-  for (auto item : list_) {
-    assert(item);
-    delete item;
-  }
+  list_.clear();
 }
 
 void LogDir::Init() {
@@ -87,8 +84,9 @@ void LogDir::Init() {
     if (stat(path.c_str(), &s) != 0) {
       continue;
     }
-    list_.push_back(new LogFile(max_file_size_, std::stoi(index), path,
-                                s.st_mtime, s.st_size));
+    auto new_file = std::make_unique<LogFile>(max_file_size_, std::stoi(index),
+                                              path, s.st_mtime, s.st_size);
+    list_.push_back(std::move(new_file));
   }
 
   assert(list_.size() <= max_files_);
@@ -96,21 +94,22 @@ void LogDir::Init() {
     return;
   }
 
-  list_.sort([](const LogFile* a, const LogFile* b) {
-    assert(a && b);
-    return a->ModifyTime() < b->ModifyTime();
-  });
+  list_.sort(
+      [](const std::unique_ptr<LogFile>& a, const std::unique_ptr<LogFile>& b) {
+        assert(a && b);
+        return a->ModifyTime() < b->ModifyTime();
+      });
   list_.back()->Open();
 }
 
 LogFile* LogDir::GetLogFile(size_t size) {
   if (!list_.empty() && list_.back()->CanWrite(size)) {
-    return list_.back();
+    return list_.back().get();
   }
 
   RollFile();
 
-  return list_.back();
+  return list_.back().get();
 }
 
 void LogDir::RollFile() {
@@ -120,13 +119,13 @@ void LogDir::RollFile() {
     list_.back()->Close();
   }
   std::string path = kPrefix + std::to_string(index) + kExtension;
-  auto new_file = new LogFile(max_file_size_, index, path);
-  list_.push_back(new_file);
+  auto new_file = std::make_unique<LogFile>(max_file_size_, index, path);
+  list_.push_back(std::move(new_file));
 
   if (list_.size() > max_files_) {
     size_t oversize = list_.size() - max_files_;
     for (size_t i = 0; i < oversize; ++i) {
-      auto* oldest_file = list_.front();
+      auto* oldest_file = list_.front().get();
       oldest_file->Remove();
       delete oldest_file;
       list_.pop_front();
@@ -136,14 +135,9 @@ void LogDir::RollFile() {
 }
 
 FileWriter::FileWriter(size_t max_files, size_t max_file_size,
-                       std::string dir_path) {
-  log_dir_ = new LogDir(max_files, max_file_size, std::move(dir_path));
-}
-
-FileWriter::~FileWriter() {
-  delete log_dir_;
-  log_dir_ = nullptr;
-}
+                       std::string dir_path)
+    : log_dir_(std::make_unique<LogDir>(max_files, max_file_size,
+                                        std::move(dir_path))) {}
 
 uint64_t FileWriter::Write(const std::string& data) {
   std::lock_guard lock_guard(mutex_);

@@ -23,7 +23,6 @@ class LogFile {
       : max_file_size_(max_file_size), index_(index), path_(std::move(path)) {}
   ~LogFile() = default;
 
- public:
   void Open();
   void Close();
   void Remove();
@@ -55,19 +54,19 @@ class LogDir {
   const size_t max_files_;
   const size_t max_file_size_;
   const std::string dir_path_;
-  std::list<LogFile*> list_;
+  std::list<std::unique_ptr<LogFile>> list_;
 };
 
 class FileWriter {
  public:
   FileWriter(size_t max_files, size_t max_file_size, std::string dir_path);
-  ~FileWriter();
+  ~FileWriter() = default;
 
   uint64_t Write(const std::string& data);
 
  private:
   std::mutex mutex_;
-  LogDir* log_dir_ = nullptr;
+  std::unique_ptr<LogDir> log_dir_;
 };
 
 }  // namespace autumn
