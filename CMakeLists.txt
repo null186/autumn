@@ -6,8 +6,6 @@ add_definitions(
         -O3 -g -W -Wall
 )
 
-include_directories(${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/include)
-
 aux_source_directory(${PROJECT_SOURCE_DIR}/src AUTUMN_SRC)
 aux_source_directory(${PROJECT_SOURCE_DIR}/src/task AUTUMN_SRC_TASK)
 aux_source_directory(${PROJECT_SOURCE_DIR}/src/utils AUTUMN_SRC_UTILS)
@@ -16,10 +14,14 @@ aux_source_directory(${PROJECT_SOURCE_DIR}/src/writer AUTUMN_SRC_WRITER)
 add_library(autumn_shared SHARED ${AUTUMN_SRC} ${AUTUMN_SRC_TASK} ${AUTUMN_SRC_UTILS} ${AUTUMN_SRC_WRITER})
 add_library(autumn_static STATIC ${AUTUMN_SRC} ${AUTUMN_SRC_TASK} ${AUTUMN_SRC_UTILS} ${AUTUMN_SRC_WRITER})
 
+target_include_directories(autumn_shared PRIVATE ${PROJECT_SOURCE_DIR})
+target_include_directories(autumn_shared PUBLIC ${PROJECT_SOURCE_DIR}/include)
 set_target_properties(autumn_shared PROPERTIES OUTPUT_NAME "include/autumn")
 get_target_property(OUTPUT_VALUE autumn_shared OUTPUT_NAME)
 message(STATUS "This is the autumn_shared OUTPUT_NAME: " ${OUTPUT_VALUE})
 
+target_include_directories(autumn_static PRIVATE ${PROJECT_SOURCE_DIR})
+target_include_directories(autumn_static PUBLIC ${PROJECT_SOURCE_DIR}/include)
 set_target_properties(autumn_static PROPERTIES OUTPUT_NAME "include/autumn")
 get_target_property(OUTPUT_VALUE autumn_static OUTPUT_NAME)
 message(STATUS "This is the autumn_static OUTPUT_NAME: " ${OUTPUT_VALUE})
@@ -32,6 +34,7 @@ link_libraries(autumn_static)
 
 set(SRC demo/main.cpp)
 add_executable(AutumnLog ${SRC})
+target_include_directories(AutumnLog PRIVATE ${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/include)
 
 # 链接动态库，在 add_executable 之后
 # target_link_libraries(AutumnLog "autumn_shared")
