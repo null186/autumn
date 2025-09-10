@@ -9,8 +9,7 @@
 
 namespace autumn {
 
-WriteTask::WriteTask(const LogConfig& config)
-    : BaseTask<LogEntry, std::string>() {
+WriteTask::WriteTask(const LogConfig& config) : BaseTask() {
   file_writer_ =
       new FileWriter(config.max_files, config.max_file_size, config.work_dir);
 }
@@ -25,10 +24,10 @@ WriteTask::~WriteTask() {
 void WriteTask::Run() {
   if (file_writer_) {
     file_writer_->Write(params_.entry);
-    BaseTask<LogEntry, std::string>::Success(params_.entry);
+    Success(params_.entry);
   } else {
     ilog << "pointer WriteTask::file_writer_ is nullptr." << end_line;
-    BaseTask<LogEntry, std::string>::Failed(params_.entry);
+    Failed(params_.entry);
   }
 }
 

@@ -18,7 +18,6 @@ class WriteTask : public BaseTask<LogEntry, std::string> {
   explicit WriteTask(const LogConfig& config);
   ~WriteTask() override;
 
- public:
   void Run() override;
   void Finish(const std::string& param) override;
 

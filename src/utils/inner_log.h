@@ -5,7 +5,6 @@
 #ifndef SRC_UTILS_INNER_LOG_H_
 #define SRC_UTILS_INNER_LOG_H_
 
-#include <cstdint>
 #include <iostream>
 #include <string>
 
@@ -21,8 +20,7 @@ class InnerLog {
   InnerLog() { end_line_ = "\n"; }
   virtual ~InnerLog() = default;
 
- public:
-  inline std::string GetEnd() const { return end_line_; }
+  std::string GetEnd() const { return end_line_; }
 
   static InnerLog GetInstance() {
     static InnerLog INSTANCE;
@@ -30,7 +28,7 @@ class InnerLog {
   }
 
   template <typename T>
-  inline const InnerLog& operator<<(const T& t DEBUG_UNUSED) const {
+  const InnerLog& operator<<(const T& t DEBUG_UNUSED) const {
 #ifdef AUTUMN_DEBUG
     std::cout << t;
 #endif

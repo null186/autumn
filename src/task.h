@@ -7,7 +7,6 @@
 
 #include <chrono>
 #include <future>
-#include <string>
 #include <thread>
 
 namespace autumn {
@@ -213,7 +212,6 @@ class BaseTask : public Task<I, O> {
     }
   }
 
- protected:
   I params_;
 
  private:

@@ -12,11 +12,9 @@ namespace autumn {
 
 class StreamTask : public BaseTask<std::string, std::string> {
  public:
-  explicit StreamTask(const LogConfig& config)
-      : BaseTask<std::string, std::string>() {}
+  explicit StreamTask(const LogConfig& config) : BaseTask() {}
   ~StreamTask() override = default;
 
- public:
   void Run() override;
   void Finish(const std::string& param) override;
 };

@@ -5,10 +5,6 @@
 #ifndef SRC_LOGGER_H_
 #define SRC_LOGGER_H_
 
-#include <cstdint>
-#include <cstdio>
-#include <string>
-
 #include "autumn/log.h"
 #include "src/assembler.h"
 #include "src/log_def.h"
@@ -20,7 +16,6 @@ class Logger {
   explicit Logger(const LogConfig& config);
   ~Logger() = default;
 
- public:
   /**
    * Print log.
    *

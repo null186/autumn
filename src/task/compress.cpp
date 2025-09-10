@@ -8,7 +8,7 @@
 
 namespace autumn {
 
-void autumn::CompressTask::Run() {
+void CompressTask::Run() {
   ilog << "Compress task start" << end_line;
   // TODO(null186): 待实现
   Success(params_);

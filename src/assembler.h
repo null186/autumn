@@ -5,8 +5,6 @@
 #ifndef SRC_ASSEMBLER_H_
 #define SRC_ASSEMBLER_H_
 
-#include <vector>
-
 #include "autumn/log.h"
 #include "src/log_def.h"
 #include "src/task.h"

@@ -15,11 +15,9 @@ struct LogMessage;
 
 class FormatTask : public BaseTask<LogMessage, LogEntry> {
  public:
-  explicit FormatTask(const LogConfig& config)
-      : BaseTask<LogMessage, LogEntry>() {}
+  explicit FormatTask(const LogConfig& config) : BaseTask() {}
   ~FormatTask() override = default;
 
- public:
   void Run() override;
   void Finish(const LogEntry& param) override;
 };

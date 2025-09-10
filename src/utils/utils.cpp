@@ -35,14 +35,14 @@ int64_t autumn::Utils::LocalTimeUs() {
       .count();
 }
 
-inline struct tm* local_time(const time_t* time, struct tm* result) {
+inline tm* local_time(const time_t* time, tm* result) {
   return localtime_r(time, result);
 }
 
 std::string autumn::Utils::FormattedSTime() {
-  char buff[32] = {0};
+  char buff[32] = {};
   const std::time_t t = LocalTimeUs() / kSecondsToMicroseconds;
-  struct std::tm tm{};
+  std::tm tm{};
   local_time(&t, &tm);
   std::strftime(buff, sizeof(buff), "%Y-%m-%d %H:%M:%S", &tm);
   return buff;

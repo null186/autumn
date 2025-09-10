@@ -5,11 +5,6 @@
 #ifndef INCLUDE_AUTUMN_LOG_H_
 #define INCLUDE_AUTUMN_LOG_H_
 
-#include <sys/cdefs.h>
-
-#include <cstdarg>
-#include <cstddef>
-#include <cstdint>
 #include <string>
 
 namespace autumn {
@@ -61,12 +56,12 @@ enum class LogType : uint32_t {
   MAX = 1 << 30
 };
 
-inline constexpr LogType operator&(LogType x, LogType y) {
+constexpr LogType operator&(LogType x, LogType y) {
   return static_cast<LogType>(static_cast<uint32_t>(x) &
                               static_cast<uint32_t>(y));
 }
 
-inline constexpr LogType operator|(LogType x, LogType y) {
+constexpr LogType operator|(LogType x, LogType y) {
   return static_cast<LogType>(static_cast<uint32_t>(x) |
                               static_cast<uint32_t>(y));
 }

@@ -68,7 +68,7 @@ void LogDir::Init() {
     return;
   }
 
-  struct dirent* d;
+  dirent* d;
   struct stat s{};
   std::string content;
   content.append(kPrefix).append("(\\d+)").append(kExtension);
@@ -146,7 +146,7 @@ FileWriter::~FileWriter() {
 }
 
 uint64_t FileWriter::Write(const std::string& data) {
-  std::lock_guard<std::mutex> lock_guard(mutex_);
+  std::lock_guard lock_guard(mutex_);
   if (!log_dir_) {
     return 0;
   }

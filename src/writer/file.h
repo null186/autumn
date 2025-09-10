@@ -5,7 +5,6 @@
 #ifndef SRC_WRITER_FILE_H_
 #define SRC_WRITER_FILE_H_
 
-#include <cstdint>
 #include <list>
 #include <mutex>
 
@@ -47,14 +46,12 @@ class LogDir {
   LogDir(size_t max_files, size_t max_file_size, std::string dir_path);
   ~LogDir();
 
- public:
   LogFile* GetLogFile(size_t size);
 
  private:
   void Init();
   void RollFile();
 
- private:
   const size_t max_files_;
   const size_t max_file_size_;
   const std::string dir_path_;
@@ -66,7 +63,6 @@ class FileWriter {
   FileWriter(size_t max_files, size_t max_file_size, std::string dir_path);
   ~FileWriter();
 
- public:
   uint64_t Write(const std::string& data);
 
  private:

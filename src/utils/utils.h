@@ -5,7 +5,6 @@
 #ifndef SRC_UTILS_UTILS_H_
 #define SRC_UTILS_UTILS_H_
 
-#include <cstdint>
 #include <string>
 
 #define EXPORT __attribute__((visibility("default")))
