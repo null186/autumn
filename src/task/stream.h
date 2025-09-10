@@ -18,6 +18,7 @@ class StreamTask : public BaseTask<std::string, std::string> {
   void Run() override;
   void Finish(const std::string& param) override;
 };
+
 }  // namespace autumn
 
 #endif  // SRC_TASK_STREAM_H_
