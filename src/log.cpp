@@ -36,7 +36,7 @@ char filter_level_to_char(Level level) {
   }
 }
 
-std::string filter_module_to_name(Module module) {
+const char* filter_module_to_name(Module module) {
   switch (module) {
     case Module::kMain:
       return "Main";
@@ -81,32 +81,24 @@ void log_print(logger_t logger, Module module, Level level, const char* tag,
     return;
   }
 
-  LogMessage log_message;
-  log_message.struct_size = 0;
-  log_message.line = line;
-  log_message.thread_id = Utils::ThreadId();
-  log_message.level = filter_level_to_char(level);
-  std::strncpy(log_message.tag, tag, sizeof(log_message.tag));
-  std::strncpy(log_message.file, file, sizeof(log_message.file));
-  std::string type_name = filter_module_to_name(module);
-  std::strncpy(log_message.module, type_name.c_str(),
-               sizeof(log_message.module));
-  std::string time = Utils::FormattedSTime();
-  std::strncpy(log_message.time, time.c_str(), sizeof(log_message.time));
-
   std::va_list v;
   va_start(v, fmt);
   std::va_list c;
-  va_copy(c, v);
-  int size = std::vsnprintf(nullptr, 0, fmt, c);
-  if (size > 0) {
-    log_message.message.resize(size + 1);
-    std::vsnprintf(&log_message.message[0], size + 1, fmt, v);
-    auto* p = reinterpret_cast<Logger*>(logger);
-    p->Print(log_message);
-  }
-  ilog << "log print format error." << end_line;
+  char buff[4096] = {};  // TODO(null186): 超过 4096 截断为多条日志。
+  std::vsnprintf(buff, 4096, fmt, v);
   va_end(v);
+
+  const LogMessage log_message{filter_module_to_name(module),
+                               filter_level_to_char(level),
+                               tag,
+                               file,
+                               line,
+                               Utils::ThreadId(),
+                               Utils::LocalTimeUs(),
+                               buff};
+  auto* p = reinterpret_cast<Logger*>(logger);
+  p->Print(log_message);
+  ilog << "log print format error." << end_line;
 }
 
 }  // namespace autumn

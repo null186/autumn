@@ -15,35 +15,47 @@
 //
 #endif
 
-static constexpr int64_t kSecondsToMicroseconds = 1000 * 1000;
+namespace autumn {
 
-uint64_t autumn::Utils::ThreadId() {
+uint64_t Utils::ThreadId() {
+  thread_local uint64_t thread_id = 0;
+  if (thread_id == 0) {
 #if defined(__ANDROID__)
-  //
+    //
 #elif defined(_WIN32)
-  //
+    //
 #elif defined(__APPLE__)
-  return syscall(SYS_thread_selfid);
+    thread_id = syscall(SYS_thread_selfid);
 #elif defined(__linux)
-  //
+    //
 #endif
+  }
+  return thread_id;
 }
 
-int64_t autumn::Utils::LocalTimeUs() {
-  return std::chrono::duration_cast<std::chrono::microseconds>(
-             std::chrono::system_clock::now().time_since_epoch())
-      .count();
+int64_t Utils::LocalTimeUs() {
+  const auto d = std::chrono::system_clock::now().time_since_epoch();
+  const auto ms = std::chrono::duration_cast<std::chrono::microseconds>(d);
+  return ms.count();
 }
 
 inline tm* local_time(const time_t* time, tm* result) {
   return localtime_r(time, result);
 }
 
-std::string autumn::Utils::FormattedSTime() {
-  char buff[32] = {};
-  const std::time_t t = LocalTimeUs() / kSecondsToMicroseconds;
+std::string Utils::FormattedSTime(const int64_t time) {
+  const auto du_us = std::chrono::microseconds(time);
+  const auto du_s = std::chrono::duration_cast<std::chrono::seconds>(du_us);
+  const auto us = (du_us - du_s).count();
+
+  const std::time_t t = du_s.count();
   std::tm tm{};
   local_time(&t, &tm);
-  std::strftime(buff, sizeof(buff), "%Y-%m-%d %H:%M:%S", &tm);
+
+  char buff[32] = {};
+  const auto len = std::strftime(buff, sizeof(buff), "%Y-%m-%d %H:%M:%S", &tm);
+  snprintf(buff + len, sizeof(buff) - len, ".%06lld", us);
   return buff;
 }
+
+}  // namespace autumn

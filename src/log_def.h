@@ -10,24 +10,22 @@
 namespace autumn {
 
 struct LogMessage {
-  /** Must be set to sizeof(LogMessage) and is used for versioning. */
-  size_t struct_size = 0;
+  /** The log module name. */
+  const char* module;
+  /** The log level char. */
+  char level = '?';
+  /** The tag for the log message. */
+  const char* tag;
+  /** Optional filename, may be set to nullptr. */
+  const char* file;
   /** Optional line number, ignore if file is nullptr. */
   uint32_t line = 0;
   /** The thread ID for the log message. */
   uint64_t thread_id = 0;
-  /** The log level char. */
-  char level = '?';
-  /** The tag for the log message. */
-  char tag[16] = {};
-  /** Optional filename, may be set to nullptr. */
-  char file[16] = {};
-  /** The log module name. */
-  char module[16] = {};
   /** The time for the log message. */
-  char time[32] = {};
+  int64_t time;
   /** The log message itself. */
-  std::string message{};
+  const char* formatted;
 };
 
 struct LogEntry {

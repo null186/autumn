@@ -91,7 +91,7 @@ constexpr Module operator|(Module x, Module y) {
  * @param module
  * @return
  */
-std::string filter_module_to_name(Module module);
+const char* filter_module_to_name(Module module);
 
 typedef long logger_t;
 
