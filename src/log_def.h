@@ -16,14 +16,14 @@ struct LogMessage {
   uint32_t line = 0;
   /** The thread ID for the log message. */
   uint64_t thread_id = 0;
-  /** The log priority char. */
-  char priority = '?';
+  /** The log level char. */
+  char level = '?';
   /** The tag for the log message. */
   char tag[16] = {};
-  /** Optional function name, may be set to nullptr. */
+  /** Optional filename, may be set to nullptr. */
   char file[16] = {};
-  /** The log type name. */
-  char type[16] = {};
+  /** The log module name. */
+  char module[16] = {};
   /** The time for the log message. */
   char time[32] = {};
   /** The log message itself. */
@@ -31,8 +31,8 @@ struct LogMessage {
 };
 
 struct LogEntry {
-  /** The log type name. */
-  char type[16] = {};
+  /** The log module name. */
+  char module[16] = {};
   /** The log entry itself. */
   std::string entry{};
 };

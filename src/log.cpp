@@ -13,44 +13,44 @@
 
 namespace autumn {
 
-char filter_pri_to_char(LogPriority pri) {
-  switch (pri) {
-    case LogPriority::VERBOSE:
+char filter_level_to_char(Level level) {
+  switch (level) {
+    case Level::kVerbose:
       return 'V';
-    case LogPriority::DEBUG:
+    case Level::kDebug:
       return 'D';
-    case LogPriority::INFO:
+    case Level::kInfo:
       return 'I';
-    case LogPriority::WARN:
+    case Level::kWarn:
       return 'W';
-    case LogPriority::ERROR:
+    case Level::kError:
       return 'E';
-    case LogPriority::FATAL:
+    case Level::kFatal:
       return 'F';
-    case LogPriority::SILENT:
+    case Level::kSilent:
       return 'S';
-    case LogPriority::DEFAULT:
-    case LogPriority::UNKNOWN:
+    case Level::kDefault:
+    case Level::kUnknown:
     default:
       return '?';
   }
 }
 
-std::string filter_type_to_name(LogType type) {
-  switch (type) {
-    case LogType::MAIN:
+std::string filter_module_to_name(Module module) {
+  switch (module) {
+    case Module::kMain:
       return "Main";
-    case LogType::RADIO:
+    case Module::kRadio:
       return "Radio";
-    case LogType::SYSTEM:
+    case Module::kSystem:
       return "System";
-    case LogType::SECURITY:
+    case Module::kSecurity:
       return "Security";
-    case LogType::KERNEL:
+    case Module::kKernal:
       return "Kernel";
-    case LogType::MIN:
-    case LogType::MAX:
-    case LogType::DEFAULT:
+    case Module::kMin:
+    case Module::kMax:
+    case Module::kDefault:
     default:
       return "?";
   }
@@ -69,7 +69,7 @@ void destroy_logger(logger_t logger) {
   delete p;
 }
 
-void log_print(logger_t logger, LogType type, LogPriority pri, const char* tag,
+void log_print(logger_t logger, Module module, Level level, const char* tag,
                const char* file, uint32_t line, const char* fmt, ...) {
   if (logger == 0) {
     ilog << "logger is nullptr." << end_line;
@@ -85,11 +85,12 @@ void log_print(logger_t logger, LogType type, LogPriority pri, const char* tag,
   log_message.struct_size = 0;
   log_message.line = line;
   log_message.thread_id = Utils::ThreadId();
-  log_message.priority = filter_pri_to_char(pri);
+  log_message.level = filter_level_to_char(level);
   std::strncpy(log_message.tag, tag, sizeof(log_message.tag));
   std::strncpy(log_message.file, file, sizeof(log_message.file));
-  std::string type_name = filter_type_to_name(type);
-  std::strncpy(log_message.type, type_name.c_str(), sizeof(log_message.type));
+  std::string type_name = filter_module_to_name(module);
+  std::strncpy(log_message.module, type_name.c_str(),
+               sizeof(log_message.module));
   std::string time = Utils::FormattedSTime();
   std::strncpy(log_message.time, time.c_str(), sizeof(log_message.time));
 

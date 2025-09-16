@@ -7,72 +7,91 @@
 
 #include <string>
 
+#define FALL_V(logger, module, tag, fmt, ...)                              \
+  log_print(logger, module, Level::kVerbose, tag, __FILE_NAME__, __LINE__, \
+            fmt, ##__VA_ARGS__)
+#define FALL_D(logger, module, tag, fmt, ...)                                 \
+  log_print(logger, module, Level::kDebug, tag, __FILE_NAME__, __LINE__, fmt, \
+            ##__VA_ARGS__)
+#define FALL_I(logger, module, tag, fmt, ...)                                \
+  log_print(logger, module, Level::kInfo, tag, __FILE_NAME__, __LINE__, fmt, \
+            ##__VA_ARGS__)
+#define FALL_W(logger, module, tag, fmt, ...)                                \
+  log_print(logger, module, Level::kWarn, tag, __FILE_NAME__, __LINE__, fmt, \
+            ##__VA_ARGS__)
+#define FALL_E(logger, module, tag, fmt, ...)                                 \
+  log_print(logger, module, Level::kError, tag, __FILE_NAME__, __LINE__, fmt, \
+            ##__VA_ARGS__)
+#define FALL_F(logger, module, tag, fmt, ...)                                 \
+  log_print(logger, module, Level::kError, tag, __FILE_NAME__, __LINE__, fmt, \
+            ##__VA_ARGS__)
+
 namespace autumn {
 
 /**
- * Autumn log priority values, in increasing order of priority.
+ * Autumn log level values, in increasing order of level.
  */
-enum class LogPriority : uint32_t {
-  UNKNOWN = 0,
-  /** The default priority, for internal use only. */
-  DEFAULT,
+enum class Level : uint32_t {
+  kUnknown = 0,
+  /** The default level, for internal use only. */
+  kDefault,
   /** Verbose logging. Should typically be disabled for a release app. */
-  VERBOSE,
+  kVerbose,
   /** Debug logging. Should typically be disabled for a release app. */
-  DEBUG,
+  kDebug,
   /** Informational logging. Should typically be disabled for a release app. */
-  INFO,
+  kInfo,
   /** Warning logging. For use with recoverable failures. */
-  WARN,
+  kWarn,
   /** Error logging. For use with unrecoverable failures. */
-  ERROR,
+  kError,
   /** Fatal logging. For use when aborting. */
-  FATAL,
+  kFatal,
   /** For internal use only. Must be last. */
-  SILENT,
+  kSilent,
 };
 
 /**
- * Log priority to char.
+ * Log level to char.
  *
- * @param pri
+ * @param level
  * @return
  */
-char filter_pri_to_char(LogPriority pri);
+char filter_level_to_char(Level level);
 
 /**
  * Here are just a few examples that you can adapt to your use case.
- * The number of type affects the number of folders in the working directory,
+ * The number of module affects the number of folders in the working directory,
  * the total number of files, and the number of open files.
  */
-enum class LogType : uint32_t {
-  MIN = 0,
-  MAIN = 1 << 0,
-  RADIO = 1 << 1,
-  SYSTEM = 1 << 2,
-  SECURITY = 1 << 3,
-  KERNEL = 1 << 4,
-  DEFAULT = MAIN | RADIO | SYSTEM | SECURITY | KERNEL,
-  MAX = 1 << 30
+enum class Module : uint32_t {
+  kMin = 0,
+  kMain = 1 << 0,
+  kRadio = 1 << 1,
+  kSystem = 1 << 2,
+  kSecurity = 1 << 3,
+  kKernal = 1 << 4,
+  kDefault = kMain | kRadio | kSystem | kSecurity | kKernal,
+  kMax = 1 << 30
 };
 
-constexpr LogType operator&(LogType x, LogType y) {
-  return static_cast<LogType>(static_cast<uint32_t>(x) &
-                              static_cast<uint32_t>(y));
+constexpr Module operator&(Module x, Module y) {
+  return static_cast<Module>(static_cast<uint32_t>(x) &
+                             static_cast<uint32_t>(y));
 }
 
-constexpr LogType operator|(LogType x, LogType y) {
-  return static_cast<LogType>(static_cast<uint32_t>(x) |
-                              static_cast<uint32_t>(y));
+constexpr Module operator|(Module x, Module y) {
+  return static_cast<Module>(static_cast<uint32_t>(x) |
+                             static_cast<uint32_t>(y));
 }
 
 /**
  * Convert LogType to name.
  *
- * @param type
+ * @param module
  * @return
  */
-std::string filter_type_to_name(LogType type);
+std::string filter_module_to_name(Module module);
 
 typedef long logger_t;
 
@@ -82,14 +101,14 @@ typedef long logger_t;
 struct LogConfig {
   /** Work dir. */
   std::string work_dir;
-  /** Maximum number of files in a log type directory. */
+  /** Maximum number of files in a log module directory. */
   size_t max_files;
   /** Maximum size of a log file. */
   size_t max_file_size; /* KiB */
-  /** {@link LogPriority} values. */
-  LogType type_mask;
-  /** {@link LogPriority} values. */
-  LogPriority priority;
+  /** {@link Level} values. */
+  Module module_mask;
+  /** {@link Level} values. */
+  Level level;
 };
 
 /**
@@ -112,20 +131,20 @@ void destroy_logger(logger_t logger);
  * Print log.
  *
  * @param logger
- * @param type
- * @param pri
+ * @param module
+ * @param level
  * @param tag
- * @param fun
+ * @param file
  * @param line
  * @param fmt
  * @param ...
  */
-void log_print(logger_t logger, LogType type, LogPriority pri, const char* tag,
-               const char* fun, uint32_t line, const char* fmt, ...)
+void log_print(logger_t logger, Module module, Level level, const char* tag,
+               const char* file, uint32_t line, const char* fmt, ...)
     __attribute__((__format__(printf, 7, 8)));
 
 /**
- * TODO: 记录断言失败，日志级别默认为 FATAL
+ * TODO: 记录断言失败，日志级别默认为 kFatal
  *
  * @param logger
  * @param condition
@@ -140,12 +159,12 @@ void log_assert(logger_t logger, const char* condition, const char* tag,
  * TODO: 在捕获到崩溃信号时调用
  *
  * @param bufID
- * @param priority
+ * @param level
  * @param tag
  * @param fmt
  * @param ...
  */
-void buf_print(int bufID, int priority, const char* tag, const char* fmt, ...)
+void buf_print(int bufID, int level, const char* tag, const char* fmt, ...)
     __attribute__((__format__(printf, 4, 5)));
 
 }  // namespace autumn

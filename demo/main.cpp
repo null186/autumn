@@ -10,28 +10,21 @@
 using namespace autumn;
 
 int main() {
-  const LogConfig log_config{"./autumn", 16, 1024, LogType::DEFAULT,
-                             LogPriority::DEFAULT};
+  const LogConfig log_config{"./autumn", 16, 1024, Module::kDefault,
+                             Level::kDefault};
   logger_t logger = 0;
   create_logger(&logger, log_config);
 
   std::vector<std::thread> threads;
   for (int i = 0; i < 20; ++i) {
     threads.emplace_back([=]() {
-      log_print(logger, LogType::MAIN, LogPriority::VERBOSE, "Network",
-                __FILE_NAME__, __LINE__, "%s", "Hello Main!");
-      log_print(logger, LogType::RADIO, LogPriority::DEBUG, "Sim",
-                __FILE_NAME__, __LINE__, "%s", "Hello Radio!");
-      log_print(logger, LogType::SYSTEM, LogPriority::INFO, "Service",
-                __FILE_NAME__, __LINE__, "%s", "Hello System!");
-      log_print(logger, LogType::SECURITY, LogPriority::WARN, "Hook",
-                __FILE_NAME__, __LINE__, "%s", "Hello Security!");
-      log_print(logger, LogType::KERNEL, LogPriority::ERROR, "Thread",
-                __FILE_NAME__, __LINE__, "%s", "Hello Kernel!");
+      FALL_V(logger, Module::kMain, "Network", "%s", "Hello Main!");
+      FALL_D(logger, Module::kRadio, "Sim", "%s", "Hello Radio!");
+      FALL_I(logger, Module::kSystem, "Service", "%s", "Hello System!");
+      FALL_W(logger, Module::kSecurity, "Hook", "%s", "Hello Security!");
+      FALL_E(logger, Module::kKernal, "Thread", "%s", "Hello Kernel!");
     });
   }
-
-  log_print(logger, LogType::KERNEL, LogPriority::ERROR, "", "", 0, nullptr);
 
   for (auto& thread : threads) {
     thread.join();
