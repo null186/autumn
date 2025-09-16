@@ -8,9 +8,10 @@
 #include "autumn/log.h"
 
 using namespace autumn;
+
 int main() {
-  autumn::LogConfig log_config{"./", 16, 1024, LogType::DEFAULT,
-                               LogPriority::DEFAULT};
+  const LogConfig log_config{"./autumn", 16, 1024, LogType::DEFAULT,
+                             LogPriority::DEFAULT};
   logger_t logger = 0;
   create_logger(&logger, log_config);
 
