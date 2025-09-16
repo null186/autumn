@@ -5,21 +5,13 @@
 #include "write.h"
 
 #include "src/utils/inner_log.h"
-#include "src/writer/file.h"
 
 namespace autumn {
 
-WriteTask::WriteTask(const LogConfig& config) : BaseTask() {
-  file_writer_ =
-      new FileWriter(config.max_files, config.max_file_size, config.work_dir);
-}
-
-WriteTask::~WriteTask() {
-  if (file_writer_) {
-    delete file_writer_;
-    file_writer_ = nullptr;
-  }
-}
+WriteTask::WriteTask(const LogConfig& config)
+    : BaseTask(),
+      file_writer_(std::make_unique<FileWriter>(
+          config.max_files, config.max_file_size, config.work_dir)) {}
 
 void WriteTask::Run() {
   if (file_writer_) {

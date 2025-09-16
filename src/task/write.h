@@ -8,6 +8,7 @@
 #include "autumn/log.h"
 #include "src/log_def.h"
 #include "src/task.h"
+#include "src/writer/file.h"
 
 namespace autumn {
 
@@ -16,13 +17,13 @@ class FileWriter;
 class WriteTask : public BaseTask<LogEntry, std::string> {
  public:
   explicit WriteTask(const LogConfig& config);
-  ~WriteTask() override;
+  ~WriteTask() override = default;
 
   void Run() override;
   void Finish(const std::string& param) override;
 
  private:
-  FileWriter* file_writer_ = nullptr;
+  std::unique_ptr<FileWriter> file_writer_;
 };
 
 }  // namespace autumn
