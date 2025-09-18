@@ -22,8 +22,7 @@ void Assembler::Assemble() {
 }
 
 void Assembler::Run(const LogMessage& message) {
-  format_task_->SetParam(message);
-  format_task_->Run();
+  format_task_->Run(message);
 }
 
 }  // namespace autumn

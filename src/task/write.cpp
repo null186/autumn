@@ -13,17 +13,17 @@ WriteTask::WriteTask(const LogConfig& config)
       file_writer_(std::make_unique<FileWriter>(
           config.max_files, config.max_file_size, config.work_dir)) {}
 
-void WriteTask::Run() {
+void WriteTask::Run(const LogEntry& in) {
   if (file_writer_) {
-    file_writer_->Write(params_.entry);
-    Success(params_.entry);
+    file_writer_->Write(in.entry);
+    Success(in.entry);
   } else {
     ilog << "pointer WriteTask::file_writer_ is nullptr." << end_line;
-    Failed(params_.entry);
+    Failed(in.entry);
   }
 }
 
-void WriteTask::Finish(const std::string& param) {
+void WriteTask::Finish(const std::string& out) {
   // TODO(null186): 待实现
 }
 

@@ -15,8 +15,8 @@ class StreamTask : public BaseTask<std::string, std::string> {
   explicit StreamTask(const LogConfig& config) : BaseTask() {}
   ~StreamTask() override = default;
 
-  void Run() override;
-  void Finish(const std::string& param) override;
+  void Run(const std::string& in) override;
+  void Finish(const std::string& out) override;
 };
 
 }  // namespace autumn

@@ -16,8 +16,8 @@ class EncryptTask : public BaseTask<LogEntry, LogEntry> {
   explicit EncryptTask(const LogConfig& config) : BaseTask() {}
   ~EncryptTask() override = default;
 
-  void Run() override;
-  void Finish(const LogEntry& param) override;
+  void Run(const LogEntry& in) override;
+  void Finish(const LogEntry& out) override;
 };
 
 }  // namespace autumn

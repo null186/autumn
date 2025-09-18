@@ -15,9 +15,9 @@ template <typename I, typename O>
 class Task {
  public:
   virtual ~Task() = default;
-  virtual void SetParam(const I& param) = 0;
-  virtual void Run() = 0;
-  virtual void Finish(const O& param) = 0;
+  virtual void Run(const I& in) = 0;
+  virtual void Finish(const O& out) = 0;
+  virtual O Result() = 0;
 };
 
 template <typename O>
@@ -28,16 +28,16 @@ class TaskListener {
   /**
    * Task success callback.
    *
-   * @param param The input data type of the next task.
+   * @param out The input data type of the next task.
    */
-  virtual void OnSuccess(const O& param) = 0;
+  virtual void OnSuccess(const O& out) = 0;
 
   /**
    * Task failed callback.
    *
-   * @param param The input data type of the next task.
+   * @param out The input data type of the next task.
    */
-  virtual void OnFailed(const O& param) = 0;
+  virtual void OnFailed(const O& out) = 0;
 };
 
 /**
@@ -72,27 +72,26 @@ class ThenTaskBridge final : public TaskBridge<I, O, X> {
  public:
   ~ThenTaskBridge() override = default;
 
-  void OnSuccess(const O& param) override {
+  void OnSuccess(const O& out) override {
     auto* current_task = TaskBridge<I, O, X>::GetCurrentTask();
     if (!current_task) {
       return;
     }
-    current_task->Finish(param);
+    current_task->Finish(out);
 
     auto* next_task = TaskBridge<I, O, X>::GetNextTask();
     if (!next_task) {
       return;
     }
-    next_task->SetParam(param);
-    next_task->Run();
+    next_task->Run(out);
   }
 
-  void OnFailed(const O& param) override {
+  void OnFailed(const O& out) override {
     auto* current_task = TaskBridge<I, O, X>::GetCurrentTask();
     if (!current_task) {
       return;
     }
-    current_task->Finish(param);
+    current_task->Finish(out);
   }
 };
 
@@ -106,34 +105,32 @@ class FollowTaskBridge final : public TaskBridge<I, O, X> {
  public:
   ~FollowTaskBridge() override = default;
 
-  void OnSuccess(const O& param) override {
+  void OnSuccess(const O& out) override {
     auto* current_task = TaskBridge<I, O, X>::GetCurrentTask();
     if (!current_task) {
       return;
     }
-    current_task->Finish(param);
+    current_task->Finish(out);
 
     auto* next_task = TaskBridge<I, O, X>::GetNextTask();
     if (!next_task) {
       return;
     }
-    next_task->SetParam(param);
-    next_task->Run();
+    next_task->Run(out);
   }
 
-  void OnFailed(const O& param) override {
+  void OnFailed(const O& out) override {
     auto* current_task = TaskBridge<I, O, X>::GetCurrentTask();
     if (!current_task) {
       return;
     }
-    current_task->Finish(param);
+    current_task->Finish(out);
 
     auto* next_task = TaskBridge<I, O, X>::GetNextTask();
     if (!next_task) {
       return;
     }
-    next_task->SetParam(param);
-    next_task->Run();
+    next_task->Run(out);
   }
 };
 
@@ -169,52 +166,53 @@ class BaseTask : public Task<I, O> {
    * The task is bridged in Then mode.
    *
    * @tparam X The output data type of the next task.
-   * @param task Next task.
+   * @param next_task Next task.
    * @return Next task.
    */
   template <typename X>
-  BaseTask<O, X>* Then(BaseTask<O, X>* task) {
+  BaseTask<O, X>* Then(BaseTask<O, X>* next_task) {
     auto bridge = std::make_unique<ThenTaskBridge<I, O, X>>();
     bridge->SetCurrentTask(this);
-    bridge->SetNextTask(task);
+    bridge->SetNextTask(next_task);
     listener_ = std::move(bridge);
-    return task;
+    return next_task;
   }
 
   /**
    * The task is bridged in Follow mode.
    *
    * @tparam X The output data type of the next task.
-   * @param task Next task.
+   * @param next_task Next task.
    * @return Next task.
    */
   template <typename X>
-  BaseTask<O, X>* Follow(BaseTask<O, X>* task) {
+  BaseTask<O, X>* Follow(BaseTask<O, X>* next_task) {
     auto bridge = std::make_unique<FollowTaskBridge<I, O, X>>();
     bridge->SetCurrentTask(this);
-    bridge->SetNextTask(task);
+    bridge->SetNextTask(next_task);
     listener_ = std::move(bridge);
-    return task;
+    return next_task;
   }
 
-  void SetParam(const I& param) final { params_ = param; }
+  O Result() final { return out_; }
 
  protected:
-  void Success(const O& param) {
+  void Success(const O& out) {
     if (listener_) {
-      listener_->OnSuccess(param);
+      listener_->OnSuccess(out);
     }
+    out_ = out;
   }
 
-  void Failed(const O& param) {
+  void Failed(const O& out) {
     if (listener_) {
-      listener_->OnFailed(param);
+      listener_->OnFailed(out);
     }
+    out_ = out;
   }
-
-  I params_;
 
  private:
+  O out_;
   std::unique_ptr<TaskListener<O>> listener_;
 };
 

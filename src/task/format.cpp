@@ -10,23 +10,22 @@
 
 namespace autumn {
 
-void FormatTask::Run() {
-  ilog << params_.msg << end_line;
+void FormatTask::Run(const LogMessage& in) {
+  ilog << in.msg << end_line;
 
-  const auto time = Utils::FormattedSTime(params_.time);
+  const auto time = Utils::FormattedSTime(in.time);
 
   char buff[4096] = {};  // TODO(null186): 超过 4096 截断为多条日志。
   std::snprintf(buff, 4096, "[%s][%" PRIu64 "][%c][%s][%s][%s][%s][%d] %s\n",
-                time.c_str(), params_.thread_id, params_.level, params_.module,
-                params_.tag, params_.loc.file, params_.loc.fun,
-                params_.loc.line, params_.msg);
+                time.c_str(), in.thread_id, in.level, in.module, in.tag,
+                in.loc.file, in.loc.fun, in.loc.line, in.msg);
 
   LogEntry log_entry;
-  memcpy(log_entry.module, params_.module, sizeof(log_entry.module));
+  memcpy(log_entry.module, in.module, sizeof(log_entry.module));
   log_entry.entry = std::string(buff);
   Success(log_entry);
 }
 
-void FormatTask::Finish(const LogEntry& param) {}
+void FormatTask::Finish(const LogEntry& out) {}
 
 }  // namespace autumn

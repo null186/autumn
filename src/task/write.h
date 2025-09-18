@@ -19,8 +19,8 @@ class WriteTask : public BaseTask<LogEntry, std::string> {
   explicit WriteTask(const LogConfig& config);
   ~WriteTask() override = default;
 
-  void Run() override;
-  void Finish(const std::string& param) override;
+  void Run(const LogEntry& in) override;
+  void Finish(const std::string& out) override;
 
  private:
   std::unique_ptr<FileWriter> file_writer_;

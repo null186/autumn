@@ -12,12 +12,12 @@
 
 namespace autumn {
 
-void StreamTask::Run() {
-  PRINT_TO_STDOUT(params_.c_str());
-  Success(params_);
+void StreamTask::Run(const std::string& in) {
+  PRINT_TO_STDOUT(in.c_str());
+  Success(in);
 }
 
-void StreamTask::Finish(const std::string& param) {
+void StreamTask::Finish(const std::string& out) {
   // TODO(null186): 待实现
 }
 

@@ -8,13 +8,13 @@
 
 namespace autumn {
 
-void CompressTask::Run() {
+void CompressTask::Run(const LogEntry& in) {
   ilog << "Compress task start" << end_line;
   // TODO(null186): 待实现
-  Success(params_);
+  Success(in);
 }
 
-void CompressTask::Finish(const LogEntry& param) {
+void CompressTask::Finish(const LogEntry& out) {
   ilog << "Compress task finish" << end_line;
   // TODO(null186): 待实现
 }
