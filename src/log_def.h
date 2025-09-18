@@ -9,23 +9,30 @@
 
 namespace autumn {
 
+struct SourceLoc {
+  /** Optional filename, may be set to nullptr. */
+  const char* file{};
+  /** Optional function, ignore if file is nullptr. */
+  const char* fun{};
+  /** Optional line number, ignore if file is nullptr. */
+  int32_t line = 0;
+};
+
 struct LogMessage {
-  /** The log module name. */
-  const char* module;
+  /** The time for the log message. */
+  int64_t time = 0;
+  /** The thread ID for the log message. */
+  int64_t thread_id = 0;
   /** The log level char. */
   char level = '?';
+  /** The log module name. */
+  const char* module{};
   /** The tag for the log message. */
-  const char* tag;
-  /** Optional filename, may be set to nullptr. */
-  const char* file;
-  /** Optional line number, ignore if file is nullptr. */
-  uint32_t line = 0;
-  /** The thread ID for the log message. */
-  uint64_t thread_id = 0;
-  /** The time for the log message. */
-  int64_t time;
+  const char* tag{};
+  /** The log source location. */
+  SourceLoc loc{};
   /** The log message itself. */
-  const char* formatted;
+  const char* msg{};
 };
 
 struct LogEntry {

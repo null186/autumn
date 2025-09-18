@@ -17,8 +17,8 @@
 
 namespace autumn {
 
-uint64_t Utils::ThreadId() {
-  thread_local uint64_t thread_id = 0;
+int64_t Utils::ThreadId() {
+  thread_local int64_t thread_id = 0;
   if (thread_id == 0) {
 #if defined(__ANDROID__)
     //

@@ -19,7 +19,7 @@ namespace autumn {
 
 class Utils {
  public:
-  static uint64_t ThreadId();
+  static int64_t ThreadId();
   static int64_t LocalTimeUs();
   static std::string FormattedSTime(int64_t time);
 };

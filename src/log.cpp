@@ -69,8 +69,9 @@ void destroy_logger(logger_t logger) {
   delete p;
 }
 
-void log_print(logger_t logger, Module module, Level level, const char* tag,
-               const char* file, uint32_t line, const char* fmt, ...) {
+void log_print(logger_t logger, Level level, Module module, const char* tag,
+               const char* file, const char* fun, int32_t line, const char* fmt,
+               ...) {
   if (logger == 0) {
     ilog << "logger is nullptr." << end_line;
     return;
@@ -88,13 +89,12 @@ void log_print(logger_t logger, Module module, Level level, const char* tag,
   std::vsnprintf(buff, 4096, fmt, v);
   va_end(v);
 
-  const LogMessage log_message{filter_module_to_name(module),
-                               filter_level_to_char(level),
-                               tag,
-                               file,
-                               line,
+  const LogMessage log_message{Utils::LocalTimeUs(),
                                Utils::ThreadId(),
-                               Utils::LocalTimeUs(),
+                               filter_level_to_char(level),
+                               filter_module_to_name(module),
+                               tag,
+                               {file, fun, line},
                                buff};
   auto* p = reinterpret_cast<Logger*>(logger);
   p->Print(log_message);

@@ -7,24 +7,26 @@
 
 #include <string>
 
-#define FALL_V(logger, module, tag, fmt, ...)                              \
-  log_print(logger, module, Level::kVerbose, tag, __FILE_NAME__, __LINE__, \
-            fmt, ##__VA_ARGS__)
-#define FALL_D(logger, module, tag, fmt, ...)                                 \
-  log_print(logger, module, Level::kDebug, tag, __FILE_NAME__, __LINE__, fmt, \
+#define SOURCE_LOC __FILE_NAME__, __PRETTY_FUNCTION__, __LINE__
+
+#define FALL_V(logger, module, tag, fmt, ...)                      \
+  log_print(logger, Level::kVerbose, module, tag, SOURCE_LOC, fmt, \
             ##__VA_ARGS__)
-#define FALL_I(logger, module, tag, fmt, ...)                                \
-  log_print(logger, module, Level::kInfo, tag, __FILE_NAME__, __LINE__, fmt, \
-            ##__VA_ARGS__)
-#define FALL_W(logger, module, tag, fmt, ...)                                \
-  log_print(logger, module, Level::kWarn, tag, __FILE_NAME__, __LINE__, fmt, \
-            ##__VA_ARGS__)
-#define FALL_E(logger, module, tag, fmt, ...)                                 \
-  log_print(logger, module, Level::kError, tag, __FILE_NAME__, __LINE__, fmt, \
-            ##__VA_ARGS__)
-#define FALL_F(logger, module, tag, fmt, ...)                                 \
-  log_print(logger, module, Level::kError, tag, __FILE_NAME__, __LINE__, fmt, \
-            ##__VA_ARGS__)
+
+#define FALL_D(logger, module, tag, fmt, ...) \
+  log_print(logger, Level::kDebug, module, tag, SOURCE_LOC, fmt, ##__VA_ARGS__)
+
+#define FALL_I(logger, module, tag, fmt, ...) \
+  log_print(logger, Level::kInfo, module, tag, SOURCE_LOC, fmt, ##__VA_ARGS__)
+
+#define FALL_W(logger, module, tag, fmt, ...) \
+  log_print(logger, Level::kWarn, module, tag, SOURCE_LOC, fmt, ##__VA_ARGS__)
+
+#define FALL_E(logger, module, tag, fmt, ...) \
+  log_print(logger, Level::kError, module, tag, SOURCE_LOC, fmt, ##__VA_ARGS__)
+
+#define FALL_F(logger, module, tag, fmt, ...) \
+  log_print(logger, Level::kError, module, tag, SOURCE_LOC, fmt, ##__VA_ARGS__)
 
 namespace autumn {
 
@@ -131,17 +133,18 @@ void destroy_logger(logger_t logger);
  * Print log.
  *
  * @param logger
- * @param module
  * @param level
+ * @param module
  * @param tag
  * @param file
+ * @param fun
  * @param line
  * @param fmt
  * @param ...
  */
-void log_print(logger_t logger, Module module, Level level, const char* tag,
-               const char* file, uint32_t line, const char* fmt, ...)
-    __attribute__((__format__(printf, 7, 8)));
+void log_print(logger_t logger, Level level, Module module, const char* tag,
+               const char* file, const char* fun, int32_t line, const char* fmt,
+               ...) __attribute__((__format__(printf, 8, 9)));
 
 /**
  * TODO: 记录断言失败，日志级别默认为 kFatal
