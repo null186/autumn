@@ -24,7 +24,7 @@ class Logger {
   void Print(const LogMessage& message);
 
  private:
-  std::unique_ptr<Assembler> assembler_;
+  std::unique_ptr<UserAssembler> user_assembler_;
 };
 
 }  // namespace autumn

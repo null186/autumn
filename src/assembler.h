@@ -16,12 +16,19 @@
 
 namespace autumn {
 
-class Assembler {
+class UserFinalListener final : public FinalListener<std::string> {
  public:
-  explicit Assembler(const LogConfig& config);
-  ~Assembler() = default;
-  void Assemble();
-  void Run(const LogMessage& message);
+  ~UserFinalListener() override = default;
+  void Success(const std::string& f) override;
+  void Failed(const std::string& f) override;
+};
+
+class UserAssembler final : public Assembler<LogMessage> {
+ public:
+  explicit UserAssembler(const LogConfig& config);
+  ~UserAssembler() override = default;
+  void Assemble() override;
+  void Run(const LogMessage& in) override;
 
  private:
   std::unique_ptr<FormatTask> format_task_;

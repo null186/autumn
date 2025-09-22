@@ -13,9 +13,10 @@ namespace autumn {
 
 struct LogMessage;
 
-class FormatTask : public BaseTask<LogMessage, LogEntry> {
+class FormatTask final
+    : public BaseTask<LogMessage, LogEntry, std::string> {
  public:
-  explicit FormatTask(const LogConfig& config) : BaseTask() {}
+  explicit FormatTask(const LogConfig& config) {}
   ~FormatTask() override = default;
 
   void Run(const LogMessage& in) override;

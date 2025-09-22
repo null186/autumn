@@ -14,7 +14,7 @@ namespace autumn {
 
 class FileWriter;
 
-class WriteTask : public BaseTask<LogEntry, std::string> {
+class WriteTask : public BaseTask<LogEntry, std::string, std::string> {
  public:
   explicit WriteTask(const LogConfig& config);
   ~WriteTask() override = default;

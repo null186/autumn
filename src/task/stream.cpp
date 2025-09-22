@@ -14,7 +14,7 @@ namespace autumn {
 
 void StreamTask::Run(const std::string& in) {
   PRINT_TO_STDOUT(in.c_str());
-  Success(in);
+  NextSuccess(in);
 }
 
 void StreamTask::Finish(const std::string& out) {

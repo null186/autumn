@@ -23,7 +23,7 @@ void FormatTask::Run(const LogMessage& in) {
   LogEntry log_entry;
   memcpy(log_entry.module, in.module, sizeof(log_entry.module));
   log_entry.entry = std::string(buff);
-  Success(log_entry);
+  NextSuccess(log_entry);
 }
 
 void FormatTask::Finish(const LogEntry& out) {}

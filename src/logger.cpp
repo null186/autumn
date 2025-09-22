@@ -7,12 +7,12 @@
 namespace autumn {
 
 Logger::Logger(const LogConfig& config) {
-  assembler_ = std::make_unique<Assembler>(config);
-  assembler_->Assemble();
+  user_assembler_ = std::make_unique<UserAssembler>(config);
+  user_assembler_->Assemble();
 }
 
 void Logger::Print(const LogMessage& message) {
-  assembler_->Run(message);
+  user_assembler_->Run(message);
 }
 
 }  // namespace autumn

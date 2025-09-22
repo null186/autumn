@@ -11,9 +11,10 @@
 
 namespace autumn {
 
-class CompressTask : public BaseTask<LogEntry, LogEntry> {
+class CompressTask final
+    : public BaseTask<LogEntry, LogEntry, std::string> {
  public:
-  explicit CompressTask(const LogConfig& config) : BaseTask() {}
+  explicit CompressTask(const LogConfig& config) {}
   ~CompressTask() override = default;
 
   void Run(const LogEntry& in) override;

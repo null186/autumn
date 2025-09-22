@@ -11,7 +11,7 @@ namespace autumn {
 void CompressTask::Run(const LogEntry& in) {
   ilog << "Compress task start" << end_line;
   // TODO(null186): 待实现
-  Success(in);
+  NextSuccess(in);
 }
 
 void CompressTask::Finish(const LogEntry& out) {

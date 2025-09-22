@@ -16,10 +16,10 @@ WriteTask::WriteTask(const LogConfig& config)
 void WriteTask::Run(const LogEntry& in) {
   if (file_writer_) {
     file_writer_->Write(in.entry);
-    Success(in.entry);
+    NextSuccess(in.entry);
   } else {
     ilog << "pointer WriteTask::file_writer_ is nullptr." << end_line;
-    Failed(in.entry);
+    NextFailed(in.entry);
   }
 }
 

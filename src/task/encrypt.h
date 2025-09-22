@@ -11,9 +11,10 @@
 
 namespace autumn {
 
-class EncryptTask : public BaseTask<LogEntry, LogEntry> {
+class EncryptTask final
+    : public BaseTask<LogEntry, LogEntry, std::string> {
  public:
-  explicit EncryptTask(const LogConfig& config) : BaseTask() {}
+  explicit EncryptTask(const LogConfig& config) {}
   ~EncryptTask() override = default;
 
   void Run(const LogEntry& in) override;

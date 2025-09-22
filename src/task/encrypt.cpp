@@ -11,7 +11,7 @@ namespace autumn {
 void EncryptTask::Run(const LogEntry& in) {
   ilog << "Encrypt task start" << end_line;
   // TODO(null186): 待实现
-  Success(in);
+  NextSuccess(in);
 }
 
 void EncryptTask::Finish(const LogEntry& out) {
